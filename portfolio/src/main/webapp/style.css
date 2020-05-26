@@ -3,7 +3,27 @@
   margin-right: auto;
   width: 650px;
 }
+#headImg {
+    margin-left: auto;
+    margin-right: auto;
+    width: 0px;
+}
 
 #greeting-container {
   margin-top: 20px;
+}
+
+#dog{
+    animation: imggrow 5s infinite alternate;
+}
+
+@keyframes imggrow {
+  from {
+      width: 100px;
+      height: 100px;
+      }
+  to {
+      width: 600px;
+      height: 600px;
+    }
 }
