@@ -31,8 +31,8 @@ function addRandomGreeting() {
  * Easiest way to handle cascading ranges, switch seemed better for specific values.
  */
 function guessBikeDistance() {
-  let guess = window.prompt("How far was the bike ride? (Example answer: 12.0)");
-  if(guess >= 62 || guess <= 2) {
+  const guess = window.prompt("How far was the bike ride? (Example answer: 12.0)");
+  if (guess >= 62 || guess <= 2) {
       window.alert("Yikes, you're off by at least 30 miles.");
   } else if (guess >= 52 || guess <= 12) {
       window.alert("Not bad! Only off by 20 miles or more. Try again if you'd like");
@@ -44,7 +44,7 @@ function guessBikeDistance() {
       window.alert("WOW! Only off by 3 miles or more. Try again if you'd like.");
   } else if (guess > 32 || guess < 32) {
       window.alert("So so close, but not quite!");
-  } else if(guess === 32) {
+  } else if (guess === 32) {
       window.alert("Hurrah! I went exactly 32.0 miles that Thursday!");
   }
 }
