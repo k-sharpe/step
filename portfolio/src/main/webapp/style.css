@@ -14,8 +14,10 @@
   margin-top: 20px;
 }
 
-#dog{
-  animation: imggrow 5s infinite alternate;
+img{
+  animation: imggrow 2.5s 1;
+  max-width: 600px;
+  max-height: 1000px;
 }
 
 h1 {
@@ -37,6 +39,5 @@ p {
     }
   to {
     width: 600px;
-    height: 600px;
   }
 }
