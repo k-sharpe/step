@@ -17,6 +17,18 @@
     animation: imggrow 5s infinite alternate;
 }
 
+h1 {
+    font: 24px verdana, serif;
+}
+
+a {
+    font: 16px verdana, serif;
+}
+
+p {
+    font: 14px verdana, serif;
+}
+
 @keyframes imggrow {
   from {
       width: 100px;
