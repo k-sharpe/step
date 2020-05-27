@@ -30,21 +30,59 @@ function addRandomGreeting() {
 /**
  * Effect of typing on the hero.
  */
-var typewriterStringIndex = 0;
-var txt = 'My Portfolio';
+
+// Index on a given string to type next.
+let typewriterStringIndex = 0;
+
+// Index of the current word
+let typePhrase = 0;
+
+// All texts to type
+let typewriterText = ['My Passions', 'My Projects', 'My Portfolio'];
 
 // Delay in milliseconds.
-var speed = 150;
+let speed = 150;
 
 /**
  * Function that handles the actual typewriter effect.
  */
 function typing() {
-  if (typewriterStringIndex < txt.length) {
-      typingDestination = document.getElementById('TypewriterText')
-      charToAdd = txt.charAt(typewriterStringIndex)
+    cleanTypewriterText();
+    var typingDestination = document.getElementById('typewriterText');
+    if (typewriterStringIndex < typewriterText[typePhrase].length) {
+      charToAdd = typewriterText[typePhrase].charAt(typewriterStringIndex);
       typingDestination.innerText += charToAdd;
       typewriterStringIndex++;
       setTimeout(typing, speed);
+  } else if (typePhrase < typewriterText.length - 1) {
+      typePhrase += 1;
+      typewriterStringIndex = 0;
+      reverseTyping();
   }
 }
+
+/**
+ * Deletes text to maintain a typing animation.
+ * Adjustments to speed are purely stylistic and will not break anything.
+ */
+function reverseTyping() {
+    var typingDestination = document.getElementById('typewriterText')
+    if (typingDestination.innerText.length === 0) {
+        setTimeout(typing, speed * 2);
+    } else {
+        let lenOfDestText = typingDestination.innerText.length;
+        typingDestination.innerText = typingDestination.innerText.substr(0, lenOfDestText - 1);
+        setTimeout(reverseTyping, speed / 3);
+    }
+}
+
+/**
+ * Cleans the typewriter text to make it display properly.
+ * Why? a normal space ' ' won't be displayed, must use
+ * '\xa0'.
+ */
+ function cleanTypewriterText() {
+     for (let i = 0; i < typewriterText.length; i++) {
+        typewriterText[i] = typewriterText[i].replace(' ', '\xa0');
+     }
+ }
