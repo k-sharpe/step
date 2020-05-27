@@ -3,10 +3,11 @@
   margin-right: auto;
   width: 650px;
 }
+
 #headImg {
-    margin-left: auto;
-    margin-right: auto;
-    width: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 0px;
 }
 
 #greeting-container {
