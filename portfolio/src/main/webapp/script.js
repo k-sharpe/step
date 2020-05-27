@@ -27,37 +27,24 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-/**
- * Effect of typing on the hero.
- */
-
-// Index on a given string to type next.
-let typewriterStringIndex = 0;
-
 // Index of the current word
 let typePhrase = 0;
 
-// All texts to type
+// All texts to type. 
 let typewriterText = ['My Passions', 'My Projects', 'My Portfolio'];
-
-// Delay in milliseconds.
-let speed = 150;
 
 /**
  * Function that handles the actual typewriter effect.
+ * @param {number} currentCharIndex Keeps track of the next letter to add to the element. 0 by default.
  */
-function typing() {
-    cleanTypewriterText();
-    var typingDestination = document.getElementById('typewriter-text');
-    if (typewriterStringIndex < typewriterText[typePhrase].length) {
-      charToAdd = typewriterText[typePhrase].charAt(typewriterStringIndex);
-      typingDestination.innerText += charToAdd;
-      typewriterStringIndex++;
-      setTimeout(typing, speed);
+function renderHeroText(currentCharIndex = 0) {
+  typingDestination = document.getElementById("typewriter-text");
+  if (currentCharIndex <= typewriterText[typePhrase].length) {
+    typingDestination.innerText = typewriterText[typePhrase].substr(0, currentCharIndex++);
+    setTimeout(renderHeroText, 150, currentCharIndex);
   } else if (typePhrase < typewriterText.length - 1) {
-      typePhrase += 1;
-      typewriterStringIndex = 0;
-      reverseTyping();
+    typePhrase += 1;
+    reverseHeroText();
   }
 }
 
@@ -65,24 +52,12 @@ function typing() {
  * Deletes text to maintain a typing animation.
  * Adjustments to speed are purely stylistic and will not break anything.
  */
-function reverseTyping() {
-    var typingDestination = document.getElementById('typewriter-text');
-    if (typingDestination.innerText.length === 0) {
-        setTimeout(typing, speed * 2);
-    } else {
-        let lenOfDestText = typingDestination.innerText.length;
-        typingDestination.innerText = typingDestination.innerText.substr(0, lenOfDestText - 1);
-        setTimeout(reverseTyping, speed / 3);
-    }
+function reverseHeroText() {
+  if (typingDestination.innerText.length === 0) {
+      setTimeout(renderHeroText, 300);
+  } else {
+      let lenOfDestText = typingDestination.innerText.length;
+      typingDestination.innerText = typingDestination.innerText.substr(0, lenOfDestText - 1);
+      setTimeout(reverseHeroText, 50);
+  }
 }
-
-/**
- * Cleans the typewriter text to make it display properly.
- * Why? a normal space ' ' won't be displayed, must use
- * '\xa0'.
- */
- function cleanTypewriterText() {
-     for (let i = 0; i < typewriterText.length; i++) {
-        typewriterText[i] = typewriterText[i].replace(' ', '\xa0');
-     }
- }
