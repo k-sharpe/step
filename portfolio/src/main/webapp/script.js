@@ -27,29 +27,30 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-// Index of the current word
-let typePhrase = 0;
+// Easy way of keeping track of what word to print.
+let typewriterTextIndex = 0;
 
-// All texts to type. 
+// Easy-access list to make editing the hero text easy. 
 let typewriterText = ['My Passions', 'My Projects', 'My Portfolio'];
 
 /**
- * Function that handles the actual typewriter effect.
+ * To keep track of what is currently being typed out, recursive because of setTimeout.
+ * Animates the front page.
  * @param {number} currentCharIndex Keeps track of the next letter to add to the element. 0 by default.
  */
 function renderHeroText(currentCharIndex = 0) {
   typingDestination = document.getElementById("typewriter-text");
-  if (currentCharIndex <= typewriterText[typePhrase].length) {
-    typingDestination.innerText = typewriterText[typePhrase].substr(0, currentCharIndex++);
+  if (currentCharIndex <= typewriterText[typewriterTextIndex].length) {
+    typingDestination.innerText = typewriterText[typewriterTextIndex].substr(0, currentCharIndex++);
     setTimeout(renderHeroText, 150, currentCharIndex);
-  } else if (typePhrase < typewriterText.length - 1) {
+  } else if (typewriterTextIndex < typewriterText.length - 1) {
     typePhrase += 1;
     reverseHeroText();
   }
 }
 
 /**
- * Deletes text to maintain a typing animation.
+ * A helper function complimentary of the type-forward function to animate the home page.
  * Adjustments to speed are purely stylistic and will not break anything.
  */
 function reverseHeroText() {
