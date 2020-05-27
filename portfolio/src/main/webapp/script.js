@@ -48,7 +48,7 @@ let speed = 150;
  */
 function typing() {
     cleanTypewriterText();
-    var typingDestination = document.getElementById('typewriterText');
+    var typingDestination = document.getElementById('typewriter-text');
     if (typewriterStringIndex < typewriterText[typePhrase].length) {
       charToAdd = typewriterText[typePhrase].charAt(typewriterStringIndex);
       typingDestination.innerText += charToAdd;
@@ -66,7 +66,7 @@ function typing() {
  * Adjustments to speed are purely stylistic and will not break anything.
  */
 function reverseTyping() {
-    var typingDestination = document.getElementById('typewriterText')
+    var typingDestination = document.getElementById('typewriter-text');
     if (typingDestination.innerText.length === 0) {
         setTimeout(typing, speed * 2);
     } else {
