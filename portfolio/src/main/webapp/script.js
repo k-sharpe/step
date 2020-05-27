@@ -26,3 +26,25 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+/**
+ * Effect of typing on the hero.
+ */
+var typewriterStringIndex = 0;
+var txt = 'My Portfolio';
+
+// Delay in milliseconds.
+var speed = 150;
+
+/**
+ * Function that handles the actual typewriter effect.
+ */
+function typing() {
+  if (typewriterStringIndex < txt.length) {
+      typingDestination = document.getElementById('TypewriterText')
+      charToAdd = txt.charAt(typewriterStringIndex)
+      typingDestination.innerText += charToAdd;
+      typewriterStringIndex++;
+      setTimeout(typing, speed);
+  }
+}
