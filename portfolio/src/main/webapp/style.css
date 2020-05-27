@@ -14,28 +14,28 @@
 }
 
 #dog{
-    animation: imggrow 5s infinite alternate;
+  animation: imggrow 5s infinite alternate;
 }
 
 h1 {
-    font: 24px verdana, serif;
+  font: 24px verdana, serif;
 }
 
 a {
-    font: 16px verdana, serif;
+  font: 16px verdana, serif;
 }
 
 p {
-    font: 14px verdana, serif;
+  font: 14px verdana, serif;
 }
 
 @keyframes imggrow {
   from {
-      width: 100px;
-      height: 100px;
-      }
-  to {
-      width: 600px;
-      height: 600px;
+    width: 100px;
+    height: 100px;
     }
+  to {
+    width: 600px;
+    height: 600px;
+  }
 }
