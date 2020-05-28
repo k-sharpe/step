@@ -55,6 +55,7 @@ body {
 
 #greeting-container {
   margin-top: 20px;
+  font: 14px verdana, serif;
   border-bottom: 2px solid chocolate;
   border-right: 2px solid tan;
   background-color: beige;
@@ -77,6 +78,22 @@ a {
 
 p {
   font: 16px verdana, serif;
+}
+
+button {
+  border-color: 5px solid lightskyblue;
+  margin: 6px;
+  background-color: rgb(78, 154, 201);
+  color: white;
+  font: 16px verdana, serif;
+  border-radius: 4px;
+  padding: 8px 14px;
+}
+
+button:hover {
+  border-color: 5px solid lightskyblue;
+  background-color: lightgrey;
+  color: rgb(78, 154, 201);
 }
 
 @keyframes imggrow {
