@@ -38,8 +38,8 @@ const typewriterText = ['My Passions', 'My Projects', 'My Portfolio'];
 function renderHeroText(currentCharIndex = 0, curTypewriterTextIndex = 0) {
   typingDestination = document.getElementById("typewriter-text");
   if (currentCharIndex <= typewriterText[curTypewriterTextIndex].length) {
-    typingDestination.innerText = typewriterText[curTypewriterTextIndex].substr(0, currentCharIndex++);
-    setTimeout(renderHeroText, 150, currentCharIndex, curTypewriterTextIndex);
+    typingDestination.innerText = typewriterText[curTypewriterTextIndex].substr(0, currentCharIndex);
+    setTimeout(renderHeroText, 150, ++currentCharIndex, curTypewriterTextIndex);
   } else if (curTypewriterTextIndex < typewriterText.length - 1) {
     reverseHeroText(typingDestination.innerText.length, ++curTypewriterTextIndex);
   }
@@ -51,11 +51,11 @@ function renderHeroText(currentCharIndex = 0, curTypewriterTextIndex = 0) {
  * @param {number} currentCharIndex Keeps track of the next letter to remove from the element.
  * @param {number} curTypewriterTextIndex Keeps track of current word in typewriterText
  */ 
-function reverseHeroText(currentCharIndex, curTypewriterTextIndex) {git 
+function reverseHeroText(currentCharIndex, curTypewriterTextIndex) { 
   if (typingDestination.innerText.length === 0) {
     setTimeout(renderHeroText, 300, 0, curTypewriterTextIndex);
   } else {
-    typingDestination.innerText = typingDestination.innerText.substr(0, currentCharIndex--);
-    setTimeout(reverseHeroText, 50, currentCharIndex, curTypewriterTextIndex);
+    typingDestination.innerText = typingDestination.innerText.substr(0, currentCharIndex);
+    setTimeout(reverseHeroText, 50, --currentCharIndex, curTypewriterTextIndex);
   }
 }
