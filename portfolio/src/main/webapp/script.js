@@ -17,7 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-    ["I have a California Real Estate Salesperson Licence!", "My dog is forever a  puppy", "I work at Google!", "I played water polo in high school"];
+    ["I have a California Real Estate Salesperson License!", "My dog is forever a puppy", "I work at Google!", "I played water polo in high school"];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -39,7 +39,7 @@ function renderHeroText(currentCharIndex = 0, curTypewriterTextIndex = 0) {
   typingDestination = document.getElementById("typewriter-text");
   if (currentCharIndex <= typewriterText[curTypewriterTextIndex].length) {
     typingDestination.innerText = typewriterText[curTypewriterTextIndex].substr(0, currentCharIndex);
-    setTimeout(renderHeroText, 150, ++currentCharIndex, curTypewriterTextIndex);
+    setTimeout(renderHeroText, /* milliseconds= */ 150, ++currentCharIndex, curTypewriterTextIndex);
   } else if (curTypewriterTextIndex < typewriterText.length - 1) {
     reverseHeroText(typingDestination.innerText.length, ++curTypewriterTextIndex);
   }
@@ -53,9 +53,9 @@ function renderHeroText(currentCharIndex = 0, curTypewriterTextIndex = 0) {
  */ 
 function reverseHeroText(currentCharIndex, curTypewriterTextIndex) { 
   if (typingDestination.innerText.length === 0) {
-    setTimeout(renderHeroText, 300, 0, curTypewriterTextIndex);
+    setTimeout(renderHeroText, /* milliseconds= */ 300, /* currentCharIndex= */0, curTypewriterTextIndex);
   } else {
     typingDestination.innerText = typingDestination.innerText.substr(0, currentCharIndex);
-    setTimeout(reverseHeroText, 50, --currentCharIndex, curTypewriterTextIndex);
+    setTimeout(reverseHeroText, /* milliseconds= */ 50, --currentCharIndex, curTypewriterTextIndex);
   }
 }
