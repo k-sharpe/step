@@ -17,7 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ["I have a California Real Estate Salesperson Licence!", "My dog is forever a  puppy", "I work at Google!", "I played water polo in high school"];
+    ["I have a California Real Estate Salesperson License!", "My dog is forever a puppy", "I work at Google!", "I played water polo in high school"];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -27,6 +27,38 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
+const typewriterText = ['My Passions', 'My Projects', 'My Portfolio'];
+
+/**
+ * To keep track of what is currently being typed out, recursive because of setTimeout.
+ * Animates the front page.
+ * @param {number} currentCharIndex Keeps track of the next letter to add to the element. 0 by default.
+ * @param {number} curTypewriterTextIndex Keeps track of the current word in typewriterText.
+ */
+function renderHeroText(currentCharIndex = 0, curTypewriterTextIndex = 0) {
+  typingDestination = document.getElementById("typewriter-text");
+  if (currentCharIndex <= typewriterText[curTypewriterTextIndex].length) {
+    typingDestination.innerText = typewriterText[curTypewriterTextIndex].substr(0, currentCharIndex);
+    setTimeout(renderHeroText, /* milliseconds= */ 150, ++currentCharIndex, curTypewriterTextIndex);
+  } else if (curTypewriterTextIndex < typewriterText.length - 1) {
+    reverseHeroText(typingDestination.innerText.length, ++curTypewriterTextIndex);
+  }
+}
+
+/**
+ * A helper function complimentary of the type-forward function to animate the home page.
+ * Adjustments to speed are purely stylistic and will not break anything.
+ * @param {number} currentCharIndex Keeps track of the next letter to remove from the element.
+ * @param {number} curTypewriterTextIndex Keeps track of current word in typewriterText
+ */ 
+function reverseHeroText(currentCharIndex, curTypewriterTextIndex) { 
+  if (typingDestination.innerText.length === 0) {
+    setTimeout(renderHeroText, /* milliseconds= */ 300, /* currentCharIndex= */0, curTypewriterTextIndex);
+  } else {
+    typingDestination.innerText = typingDestination.innerText.substr(0, currentCharIndex);
+    setTimeout(reverseHeroText, /* milliseconds= */ 50, --currentCharIndex, curTypewriterTextIndex);
+  }
+}
 /**
  * Easiest way to handle cascading ranges, switch seemed better for specific values.
  */
