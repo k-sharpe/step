@@ -83,7 +83,7 @@ function guessBikeDistance() {
       reGuess = window.confirm("So so SO close, but not quite!");
     } else if (difference === 0.0) {
       reGuess = false;
-      window.alert("Hurrah! I went exactly 32.0 miles that Thursday!");
+      window.alert("Hurrah! I went exactly " + distance + " miles that Thursday!");
     } else {
       reGuess = window.confirm("That's not a valid guess, your guesses should look like '4' or '12.6' not " + guess);
     }
