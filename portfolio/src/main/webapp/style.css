@@ -1,8 +1,59 @@
 #content {
+  text-align: left;
+  align-content: left;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 150px;
-  width: 650px;
+  width: 800px;
+  background-color: white;
+  border-left: 3px solid seagreen;
+  border-bottom: 3px solid seagreen;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  padding-left: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+body {
+  background-color: antiquewhite;
+}
+
+#footer {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  border-top: 8px solid seagreen;
+  height: 300px;
+  background-color: rgb(0, 20, 39);
+  color: lightyellow;
+  width: 800px;
+}
+
+#footer-container {
+  border-top: 8px solid seagreen;
+  background-color: rgb(0, 20, 39);
+}
+
+#socials {
+  align-self: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  background: gainsboro;
+  margin-right: 20px;
+  border-radius: 2px;
+}
+
+#linkedin {
+  display: inline-block;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+#github {
+  margin-left: 15px;
+  margin-right: 15px;
+  display: inline-block;
 }
 
 .landing {
@@ -13,6 +64,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+  border-bottom: 4px solid salmon;
 }
 
 #typewriter-text {
@@ -22,30 +74,74 @@
   color: coral;
   text-align: center;
   position: absolute;
-  font-size: 60px;
+  font-size: 72px;
   transform: translate(-50%, -50%);
 }
 
 #greeting-container {
   margin-top: 20px;
+  font: 14px verdana, serif;
+  border-bottom: 2px solid chocolate;
+  border-right: 2px solid tan;
+  background-color: beige;
 }
 
 img {
   animation: imggrow 2.5s 1;
   max-width: 600px;
   max-height: 1000px;
+  border: 5px solid chocolate;
 }
 
 h1 {
-  font: 24px verdana, serif;
+  font: 32px verdana, serif;
+  text-align: center;
 }
 
 a {
-  font: 16px verdana, serif;
+  font: 24px verdana, serif;
 }
 
 p {
-  font: 14px verdana, serif;
+  font: 16px verdana, serif;
+}
+
+button {
+  border-color: 5px solid lightskyblue;
+  margin: 6px;
+  background-color: rgb(78, 154, 201);
+  color: white;
+  font: 16px verdana, serif;
+  border-radius: 4px;
+  padding: 8px 14px;
+}
+
+button:hover {
+  border-color: 5px solid lightskyblue;
+  background-color: lightgrey;
+  color: rgb(78, 154, 201);
+}
+
+input[id=linkedin-button] {
+  border-color: 5px solid #0077b5;
+  margin: 6px;
+  background-color: #0077b5;
+  color: white;
+  font: 16px verdana, serif;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 20px 20px;
+}
+
+input[id=github-button] {
+  border-color: 5px solid #6e5494;
+  margin: 6px;
+  background-color: #6e5494;
+  color: white;
+  font: 16px verdana, serif;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 20px 20px;
 }
 
 @keyframes imggrow {
