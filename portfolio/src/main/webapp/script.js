@@ -66,23 +66,23 @@ function guessBikeDistance() {
   let reGuess = true;
   while(reGuess) {
     guess = window.prompt("How far was it? (example: 4)");
+    guess = parseFloat(guess);
     if (guess >= 62 || guess <= 2) {
       reGuess = window.confirm("Yikes, you're off by at least 30 miles.");
-    } else if (guess >= 52 || guess <= 12) {
+    } else if (guess >= 52.0 || guess <= 12.0) {
       reGuess = window.confirm("Not bad! Only off by 20 miles or more. Try again if you'd like");
-    } else if (guess >= 42 || guess <= 22) {
+    } else if (guess >= 42.0 || guess <= 22.0) {
       reGuess = window.confirm("Super close! Only off by 10 miles or more. Try again!");
-    } else if (guess >= 37 || guess <= 27) {
+    } else if (guess >= 37.0 || guess <= 27.0) {
       reGuess = window.confirm("Omg, only off by 5 miles or more. Try again, you're so close.");
-    } else if(guess >= 35 || guess <= 29) {
+    } else if(guess >= 35.0 || guess <= 29.0) {
       reGuess = window.confirm("WOW! Only off by 3 miles or more. Try again if you'd like.");
-    } else if (guess > 32 || guess < 32) {
+    } else if (guess > 32.0 || guess < 32.0) {
       reGuess = window.confirm("So so SO close, but not quite!");
-    } else if (guess == 32) {
+    } else if (guess === 32.0) {
       reGuess = false;
       window.alert("Hurrah! I went exactly 32.0 miles that Thursday!");
-    }
-    else {
+    } else {
       reGuess = window.confirm("That's not a valid guess, your guesses should look like '4' or '12.6' not " + guess);
     }
   }
