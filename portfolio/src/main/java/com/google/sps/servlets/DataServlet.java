@@ -29,12 +29,12 @@ public class DataServlet extends HttpServlet {
   private String message = "Hello! Hope you are well!";
 
   ArrayList<String> comments = new ArrayList<String>();
-  comments.add("Hello!");
-  comments.add("This is a comment");
-  comments.add("I like this!");
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    comments.add("Hello!");
+    comments.add("This is a comment");
+    comments.add("I like this!");
     String json = convertToJsonUsingGson(comments);
 
     response.setContentType("application/json;");
