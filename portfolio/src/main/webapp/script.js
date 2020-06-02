@@ -95,14 +95,12 @@ function revealBikeDistance(){
 }
 
 function getCommentsFromServlet() {
-  console.log('Fetching.');
-
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comments');
     commentListElement.innerHTML = '';
-    for(let i = comments.length; i <= 0; i--) {
+    for (let i = 0; i < comments.length; i++) {
       commentListElement.appendChild(
-        createListElement(comments[i]));
+        createListElement(comments[comments.length - 1 -i]));
     }
   });
 }

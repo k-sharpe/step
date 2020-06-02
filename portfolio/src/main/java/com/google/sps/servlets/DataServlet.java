@@ -26,14 +26,12 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
+  
   ArrayList<String> comments = new ArrayList<String>();
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
     String json = convertToJson(comments);
-
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
@@ -41,13 +39,14 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-    String text = getParameter(request, "text-input", "");
+    String rawText = getParameter(request, "text-input");
+    String text = rawText.replace("\n", "").replace("\r", " ");
 
-    //cap on text length to prevent abuse.
-    if(text.length() > 300) {
+    // Cap on text length to prevent abuse.
+    if (text.length() > 300) {
       text = text.substring(0, 300);
     }
-    //cap comments to 10 recents to prevent abuse.
+    // Cap comments to 10 recents to prevent abuse.
     if (comments.size() < 10) {
       comments.add(text);
     } else {
@@ -61,10 +60,10 @@ public class DataServlet extends HttpServlet {
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client (From the demo)
    */
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+  private String getParameter(HttpServletRequest request, String name) {
     String value = request.getParameter(name);
     if (value == null) {
-      return defaultValue;
+      return "";
     }
     return value;
   }
@@ -74,7 +73,6 @@ public class DataServlet extends HttpServlet {
    */
   private String convertToJson(ArrayList<String> comments) {
     Gson gson = new Gson();
-    String json = gson.toJson(comments);
-    return json;
+    return gson.toJson(comments);
   }
 }

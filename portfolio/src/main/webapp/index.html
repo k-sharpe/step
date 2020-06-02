@@ -6,16 +6,17 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="renderHeroText();getCommentsFromServlet();">
+  <body onload="renderHeroText(); getCommentsFromServlet();">
     <div class="landing">
       <div id="typewriter-text">
       </div>
     </div>
     <div id="pull-data">
       <form action="/data" method="POST">
-      <p>Enter your comment:</p>
-      <textarea name="text-input"></textarea>
-      <br/><br/>
+        <p>Enter your comment:</p>
+        <textarea name="text-input"></textarea>
+        <br/>
+        <br/>
       <input type="submit" />
     </form>
       <div id="message-container">
