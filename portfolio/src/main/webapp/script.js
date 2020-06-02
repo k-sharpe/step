@@ -94,14 +94,10 @@ function revealBikeDistance(){
   window.alert("A whopping 32 miles");
 }
 
-function getMessageFromServlet() {
+function getCommentsFromServlet() {
   console.log('Fetching.');
 
-  // The fetch() function returns a Promise because the request is asynchronous.
   fetch('/data').then(response => response.json()).then((comments) => {
-    // stats is an object, not a string, so we have to
-    // reference its fields to create HTML content
-
     const commentListElement = document.getElementById('comments');
     commentListElement.innerHTML = '';
     for(let i = 0; i < comments.length; i++) {
