@@ -100,9 +100,9 @@ function getCommentsFromServlet() {
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comments');
     commentListElement.innerHTML = '';
-    for(let i = 0; i < comments.length; i++) {
+    for(let i = comments.length; i <= 0; i--) {
       commentListElement.appendChild(
-        createListElement('Comment: ' + comments[i]));
+        createListElement(comments[i]));
     }
   });
 }
