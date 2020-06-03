@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
+    long timestamp = System.currentTimeMillis();
     String rawText = getParameter(request, "text-input");
     String text = rawText.replace("\n", "").replace("\r", " ");
 
@@ -53,6 +57,14 @@ public class DataServlet extends HttpServlet {
       comments.remove(0);
       comments.add(text);
     }
+    
+    Entity comment = new Entity("Comment");
+    comment.setProperty("Contents", text);
+    comment.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(comment);
+
     response.sendRedirect("/index.html");
   }
 
