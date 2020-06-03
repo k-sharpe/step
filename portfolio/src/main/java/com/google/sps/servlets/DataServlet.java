@@ -17,6 +17,9 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,10 +33,29 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   
-  ArrayList<String> comments = new ArrayList<String>();
+  // Comment number and size filters to prevent abuse.
+  private static final int maxCommentLength = 300;
+  private static final int maxComments = 10;
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    ArrayList<String> comments = new ArrayList<>();
+    int foreachCounter = 0;
+
+    for (Entity entity : results.asIterable()) {
+      if (foreachCounter < maxComments) {
+        String commentContents = (String) entity.getProperty("Contents");
+        comments.add(commentContents);
+        foreachCounter++;
+      } else {
+        break;
+      }
+    }
+
     String json = convertToJson(comments);
     response.setContentType("application/json;");
     response.getWriter().println(json);
@@ -43,19 +65,13 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     long timestamp = System.currentTimeMillis();
+    ArrayList<String> comments = new ArrayList<>();
     String rawText = getParameter(request, "text-input");
     String text = rawText.replace("\n", "").replace("\r", " ");
 
     // Cap on text length to prevent abuse.
-    if (text.length() > 300) {
-      text = text.substring(0, 300);
-    }
-    // Cap comments to 10 recents to prevent abuse.
-    if (comments.size() < 10) {
-      comments.add(text);
-    } else {
-      comments.remove(0);
-      comments.add(text);
+    if (text.length() > maxCommentLength) {
+      text = text.substring(0, maxCommentLength);
     }
     
     Entity comment = new Entity("Comment");
@@ -68,6 +84,7 @@ public class DataServlet extends HttpServlet {
     response.sendRedirect("/index.html");
   }
 
+  // Utility set
   /**
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client (From the demo)

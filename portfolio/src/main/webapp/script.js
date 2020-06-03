@@ -100,7 +100,7 @@ function getCommentsFromServlet() {
     commentListElement.innerHTML = '';
     for (let i = 0; i < comments.length; i++) {
       commentListElement.appendChild(
-        createListElement(comments[comments.length - 1 -i]));
+        createListElement(comments[i]));
     }
   });
 }
