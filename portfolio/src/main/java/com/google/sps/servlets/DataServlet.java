@@ -34,20 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  
-  @Override public void init() {
-    Entity site = new Entity("Site");
-    site.setProperty("link", "http://www.google.com/");
-    site.setProperty("description", "Hi! This is my website.");
-    site.setProperty("votes", "10");
-    site.setProperty("display", true);
-    site.setProperty("image", "https://screenshot.googleplex.com/eNjHJDsXyrs.png");
-    site.setProperty("name", "Kendrick Sharpe");
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(site);
-  }
-
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
