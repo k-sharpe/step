@@ -107,6 +107,9 @@ function displaySite() {
   document.getElementById("site-screenshot").src = image;
   document.getElementById("step-about").innerText = description;
   document.getElementById("display-name").innerText = name;
+  // force redraw of image
+  document.getElementById('site-screenshot').setAttribute("visibility", "hidden");
+  document.getElementById('site-screenshot').setAttribute("visibility", "visible");
 }
 
 function getDataFromServlet() {

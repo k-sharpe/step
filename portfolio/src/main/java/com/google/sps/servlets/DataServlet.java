@@ -57,15 +57,15 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     ArrayList<ArrayList<String>> sites = new ArrayList<>();
     
-    for (Entity entity : results.asIterable()) {
-      boolean toDisplay = (boolean) entity.getProperty("display");
+    for (Entity site : results.asIterable()) {
+      boolean toDisplay = (boolean) site.getProperty("display");
       if (toDisplay) {
         ArrayList<String> siteData = new ArrayList<>();
-        siteData.add((String) entity.getProperty("link"));
-        siteData.add((String) entity.getProperty("description"));
-        siteData.add((String) entity.getProperty("votes"));
-        siteData.add((String) entity.getProperty("image"));
-        siteData.add((String) entity.getProperty("name"));
+        siteData.add((String) site.getProperty("link"));
+        siteData.add((String) site.getProperty("description"));
+        siteData.add((String) site.getProperty("votes"));
+        siteData.add((String) site.getProperty("image"));
+        siteData.add((String) site.getProperty("name"));
         sites.add(siteData);
       }
     }
@@ -84,10 +84,10 @@ public class DataServlet extends HttpServlet {
     Entity site = new Entity("Site");
 
     site.setProperty("description", description);
-    site.setProperty("display", false);
+    site.setProperty("display", true);
     site.setProperty("image", "");
-    site.setProperty("link", link);
-    site.setProperty("votes", 10);
+    site.setProperty("link", "https://screenshot.googleplex.com/DSNRtxSKgko.png");
+    site.setProperty("votes", "10");
     site.setProperty("name", name);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(site);
