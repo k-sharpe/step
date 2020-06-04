@@ -35,8 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
   
   // Comment number and size filters to prevent abuse.
-  private static final int maxCommentLength = 300;
-  private static final int maxComments = 10;
+  private static final int MAX_COMMENT_LENGTH = 300;
+  private static final int MAX_COMMENT_COUNT = 10;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -46,15 +46,10 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments = new ArrayList<>();
     int foreachCounter = 0;
-
-    for (Entity entity : results.asIterable()) {
-      if (foreachCounter < maxComments) {
-        String commentContents = (String) entity.getProperty("Contents");
-        comments.add(commentContents);
-        foreachCounter++;
-      } else {
-        break;
-      }
+    Itarator<Entity> resultIterator = results.asIterable().iterator();
+    while (comments.size() < MAX_COMMENTS && resultIterator.hasNext()) {
+      String commentContetents = resultIterator.getProperty("Contents");
+      comments.add(commentContents);
     }
 
     String json = convertToJson(comments);
@@ -71,8 +66,8 @@ public class DataServlet extends HttpServlet {
     String text = rawText.replace("\n", "").replace("\r", " ");
 
     // Cap on text length to prevent abuse.
-    if (text.length() > maxCommentLength) {
-      text = text.substring(0, maxCommentLength);
+    if (text.length() > MAX_COMMENT_LENGTH) {
+      text = text.substring(0, MAX_COMMENT_LENGTH);
     }
     
     Entity comment = new Entity("Comment");
@@ -84,8 +79,7 @@ public class DataServlet extends HttpServlet {
 
     response.sendRedirect("/index.html");
   }
-  
-  // Utility set
+
   /**
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client (From the demo)
