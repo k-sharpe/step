@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,9 +47,9 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments = new ArrayList<>();
     int foreachCounter = 0;
-    Itarator<Entity> resultIterator = results.asIterable().iterator();
-    while (comments.size() < MAX_COMMENTS && resultIterator.hasNext()) {
-      String commentContetents = resultIterator.getProperty("Contents");
+    Iterator<Entity> resultIterator = results.asIterable().iterator();
+    while (comments.size() < MAX_COMMENT_COUNT && resultIterator.hasNext()) {
+      String commentContents = (String) resultIterator.next().getProperty("Contents");
       comments.add(commentContents);
     }
 
