@@ -84,9 +84,9 @@ public class DataServlet extends HttpServlet {
     Entity site = new Entity("Site");
 
     site.setProperty("description", description);
-    site.setProperty("display", true);
+    site.setProperty("display", false);
     site.setProperty("image", "");
-    site.setProperty("link", "https://screenshot.googleplex.com/DSNRtxSKgko.png");
+    site.setProperty("link", "");
     site.setProperty("votes", "10");
     site.setProperty("name", name);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
