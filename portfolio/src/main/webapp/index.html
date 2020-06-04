@@ -6,16 +6,27 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="renderHeroText();">
+  <body onload="renderHeroText(); getCommentsFromServlet();">
     <div class="landing">
       <div id="typewriter-text">
       </div>
     </div>
     <div id="pull-data">
-      <h1>Message from the server</h1>
-      <p>Click here to see a message:</p>
-      <button onclick="getMessageFromServlet()">Get message</button>
-      <div id="message-container"></div>
+      <form action="/data" method="POST">
+        <p>Enter your comment:</p>
+        <textarea name="text-input"></textarea>
+        <br/>
+        <br/>
+      <input type="submit"/>
+    </form>
+    <form action="/delete-comments" method="POST">
+      </br>
+      <input type="submit" value="Delete ALL comments"/>
+    </form>
+      <div id="message-container">
+        <p>Recent comments:</p>
+        <ul id="comments"></ul>
+      </div>
     </div>
     <div id="content">
       <h1>Kendrick Sharpe's Portfolio</h1>
