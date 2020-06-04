@@ -48,9 +48,6 @@ public class DataServlet extends HttpServlet {
     datastore.put(site);
   }
 
-  // Comment number and size filters to prevent abuse.
-  private static final int MAX_COMMENT_LENGTH = 300;
-  private static final int MAX_COMMENT_COUNT = 10;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -80,23 +77,20 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the input from the form.
-    long timestamp = System.currentTimeMillis();
-    ArrayList<String> comments = new ArrayList<>();
-    String rawText = getParameter(request, "text-input");
-    String text = rawText.replace("\n", "").replace("\r", " ");
+    String rawText = getParameter(request, "description");
+    String description = rawText.replace("\n", "").replace("\r", " ");
+    String link = getParameter(request, "link");
+    String name = getParameter(request, "name");
+    Entity site = new Entity("Site");
 
-    // Cap on text length to prevent abuse.
-    if (text.length() > MAX_COMMENT_LENGTH) {
-      text = text.substring(0, MAX_COMMENT_LENGTH);
-    }
-    
-    Entity comment = new Entity("Comment");
-    comment.setProperty("Contents", text);
-    comment.setProperty("timestamp", timestamp);
-
+    site.setProperty("description", description);
+    site.setProperty("display", false);
+    site.setProperty("image", "");
+    site.setProperty("link", link);
+    site.setProperty("votes", 10);
+    site.setProperty("name", name);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(comment);
+    datastore.put(site);
 
     response.sendRedirect("/index.html");
   }

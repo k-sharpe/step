@@ -114,6 +114,7 @@ function getDataFromServlet() {
     for (let i = 0; i < sites.length; i++) {
       websiteData.push(sites[i]);
     }
+    document.getElementById("step-total").innerText = "A whopping " + websiteData.length + " sites added!";
     displaySite();
   });
 }
@@ -133,6 +134,11 @@ function displayPrevious() {
   } else {
     currentWebsiteDisplayed--;
   }
+  displaySite();
+}
+
+function displayRandom() {
+  currentWebsiteDisplayed = Math.floor(Math.random() * (websiteData.length)); 
   displaySite();
 }
 
