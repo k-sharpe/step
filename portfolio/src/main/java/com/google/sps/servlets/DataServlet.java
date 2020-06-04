@@ -46,7 +46,7 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments = new ArrayList<>();
-    int foreachCounter = 0;
+
     Iterator<Entity> resultIterator = results.asIterable().iterator();
     while (comments.size() < MAX_COMMENT_COUNT && resultIterator.hasNext()) {
       String commentContents = (String) resultIterator.next().getProperty("Contents");
