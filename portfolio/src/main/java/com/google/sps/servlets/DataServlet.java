@@ -35,6 +35,17 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   
+  @Override public void init() {
+    Entity site = new Entity("Site");
+    site.setProperty("link", "http://www.google.com/");
+    site.setProperty("description", "Hi! This is my website.");
+    site.setProperty("votes", 10);
+    site.setProperty("Display", true);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(site);
+  }
+
   // Comment number and size filters to prevent abuse.
   private static final int MAX_COMMENT_LENGTH = 300;
   private static final int MAX_COMMENT_COUNT = 10;
