@@ -37,7 +37,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Site").addSort("votes", SortDirection.DESCENDING);
+    Query query = new Query("Site").addSort("votes", SortDirection.ASCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -72,7 +72,7 @@ public class DataServlet extends HttpServlet {
     site.setProperty("description", description);
     site.setProperty("display", false);
     site.setProperty("image", "");
-    site.setProperty("link", "");
+    site.setProperty("link", link);
     site.setProperty("votes", "10");
     site.setProperty("name", name);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
