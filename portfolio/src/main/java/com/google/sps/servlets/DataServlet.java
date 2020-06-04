@@ -39,8 +39,9 @@ public class DataServlet extends HttpServlet {
     Entity site = new Entity("Site");
     site.setProperty("link", "http://www.google.com/");
     site.setProperty("description", "Hi! This is my website.");
-    site.setProperty("votes", 10);
-    site.setProperty("Display", true);
+    site.setProperty("votes", "10");
+    site.setProperty("display", true);
+    site.setProperty("image", "https://screenshot.googleplex.com/eNjHJDsXyrs.png");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(site);
@@ -52,19 +53,25 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("Site").addSort("votes", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    ArrayList<String> comments = new ArrayList<>();
-
-    Iterator<Entity> resultIterator = results.asIterable().iterator();
-    while (comments.size() < MAX_COMMENT_COUNT && resultIterator.hasNext()) {
-      String commentContents = (String) resultIterator.next().getProperty("Contents");
-      comments.add(commentContents);
+    ArrayList<ArrayList<String>> sites = new ArrayList<>();
+    
+    for (Entity entity : results.asIterable()) {
+      boolean toDisplay = (boolean) entity.getProperty("display");
+      if (toDisplay) {
+        ArrayList<String> siteData = new ArrayList<>();
+        siteData.add((String) entity.getProperty("link"));
+        siteData.add((String) entity.getProperty("description"));
+        siteData.add((String) entity.getProperty("votes"));
+        siteData.add((String) entity.getProperty("image"));
+        sites.add(siteData);
+      }
     }
 
-    String json = convertToJson(comments);
+    String json = convertToJson(sites);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
@@ -107,7 +114,7 @@ public class DataServlet extends HttpServlet {
   /**
    * Used to send json data to the client.
    */
-  private String convertToJson(ArrayList<String> comments) {
+  private String convertToJson(ArrayList<ArrayList<String>> comments) {
     Gson gson = new Gson();
     return gson.toJson(comments);
   }

@@ -6,12 +6,13 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="renderHeroText(); getCommentsFromServlet();">
+  <body onload="start();">
     <div class="landing">
       <div id="typewriter-text">
       </div>
     </div>
     <div id="pull-data">
+      <a href="" id="to-site"><img src="" id="site-screenshot" alt="Image of site"></a>
       <form action="/data" method="POST">
         <p>Enter your comment:</p>
         <textarea name="text-input"></textarea>

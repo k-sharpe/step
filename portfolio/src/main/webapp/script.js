@@ -28,6 +28,8 @@ function addRandomGreeting() {
 }
 
 const typewriterText = ['My Passions', 'My Projects', 'My Portfolio'];
+var websiteData = [];
+var currentWebsiteDisplayed = 0;
 
 /**
  * To keep track of what is currently being typed out, recursive because of setTimeout.
@@ -94,21 +96,29 @@ function revealBikeDistance(){
   window.alert("A whopping 32 miles");
 }
 
-function getCommentsFromServlet() {
-  fetch('/data').then(response => response.json()).then((comments) => {
-    const commentListElement = document.getElementById('comments');
-    commentListElement.innerHTML = '';
-    for (let i = 0; i < comments.length; i++) {
-      commentListElement.appendChild(
-        createListElement(comments[i]));
+function displaySite() {
+  let siteDisplayable = websiteData[currentWebsiteDisplayed];
+  let url = siteDisplayable[0];
+  let description = siteDisplayable[1];
+  let votes = siteDisplayable[2];
+  let image = siteDisplayable[3];
+  let link = document.getElementById("to-site");
+  link.setAttribute("href", url);
+  let img = document.getElementById("site-screenshot");
+  img.src = image;
+}
+
+function getDataFromServlet() {
+  fetch('/data').then(response => response.json()).then((sites) => {
+    for (let i = 0; i < sites.length; i++) {
+      websiteData.push(sites[i]);
     }
+    displaySite();
   });
 }
 
 
-/** Creates an <li> element containing text. */
-function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+function start() {
+  renderHeroText();
+  getDataFromServlet();
 }
