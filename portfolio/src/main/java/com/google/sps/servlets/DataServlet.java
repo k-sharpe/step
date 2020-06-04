@@ -42,6 +42,7 @@ public class DataServlet extends HttpServlet {
     site.setProperty("votes", "10");
     site.setProperty("display", true);
     site.setProperty("image", "https://screenshot.googleplex.com/eNjHJDsXyrs.png");
+    site.setProperty("name", "Kendrick Sharpe");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(site);
@@ -67,6 +68,7 @@ public class DataServlet extends HttpServlet {
         siteData.add((String) entity.getProperty("description"));
         siteData.add((String) entity.getProperty("votes"));
         siteData.add((String) entity.getProperty("image"));
+        siteData.add((String) entity.getProperty("name"));
         sites.add(siteData);
       }
     }

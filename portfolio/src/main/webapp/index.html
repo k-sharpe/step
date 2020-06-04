@@ -11,23 +11,20 @@
       <div id="typewriter-text">
       </div>
     </div>
-    <div id="pull-data">
+    <div id="step-projects">
+      <h1>Step Project Browser!</h1>
+      <p id="display-name"><p>
       <a href="" id="to-site"><img src="" id="site-screenshot" alt="Image of site"></a>
-      <form action="/data" method="POST">
-        <p>Enter your comment:</p>
-        <textarea name="text-input"></textarea>
-        <br/>
-        <br/>
-      <input type="submit"/>
-    </form>
-    <form action="/delete-comments" method="POST">
-      </br>
-      <input type="submit" value="Delete ALL comments"/>
-    </form>
-      <div id="message-container">
-        <p>Recent comments:</p>
-        <ul id="comments"></ul>
+      <div id="step-buttons">
+        <button id="step-prev" onclick="displayNext()">Previous</button>
+        <button id="step-next" onclick="displayNext()">Next</button>
       </div>
+      <h2>About the site:</h2>
+      <p id="step-about"></p>
+      <form action="submit.html">
+        </br>
+        <input type="submit" value="Submit your site!"/>
+      </form>
     </div>
     <div id="content">
       <h1>Kendrick Sharpe's Portfolio</h1>

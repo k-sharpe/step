@@ -102,10 +102,11 @@ function displaySite() {
   let description = siteDisplayable[1];
   let votes = siteDisplayable[2];
   let image = siteDisplayable[3];
-  let link = document.getElementById("to-site");
-  link.setAttribute("href", url);
-  let img = document.getElementById("site-screenshot");
-  img.src = image;
+  let name = siteDisplayable[4];
+  document.getElementById("to-site").setAttribute("href", url);
+  document.getElementById("site-screenshot").src = image;
+  document.getElementById("step-about").innerText = description;
+  document.getElementById("display-name").innerText = name;
 }
 
 function getDataFromServlet() {
@@ -117,6 +118,23 @@ function getDataFromServlet() {
   });
 }
 
+function displayNext() {
+  if (currentWebsiteDisplayed >= websiteData.length - 1) {
+    currentwebsiteDisplayed = 0;
+  } else {
+    currentWebsiteDisplayed++;
+  }
+  displaySite();
+}
+
+function displayPrevious() {
+  if(currentWebsiteDisplayed <= 0) {
+    currentwebsiteDisplayed = websiteData.length - 1;
+  } else {
+    currentWebsiteDisplayed--;
+  }
+  displaySite();
+}
 
 function start() {
   renderHeroText();
