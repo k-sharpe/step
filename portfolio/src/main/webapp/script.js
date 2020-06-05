@@ -147,5 +147,27 @@ function displayRandom() {
 
 function start() {
   renderHeroText();
-  getDataFromServlet();
+  //getDataFromServlet();
+  getCommentsFromServlet();
 }
+
+function getCommentsFromServlet() {
+  fetch('/comment').then(response => response.json()).then((comments) => {
+    const commentListElement = document.getElementById('comments');
+    commentListElement.innerHTML = '';
+    for (let i = 0; i < comments.length; i++) {
+      let content = comments[i];
+      commentListElement.appendChild(
+        createListElement(content[0], content[1]));
+    }
+  });
+}
+
+
+/** Creates an <li> element containing text. */
+function createListElement(text,name) {
+  const liElement = document.createElement('li');
+  liElement.innerText = name + ": " + text;
+  return liElement;
+}
+

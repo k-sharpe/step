@@ -56,6 +56,19 @@
       <p>     My most recent personal project is a stock portfolio manager. 
         It's waiting to be worked on once the internship ends, and currently doesn't work! </p>
     </div>
+    <div id="pull-data" align="center">
+      <div id="message-container" align="center">
+        <p>Recent comments:</p>
+        <ul id="comments"></ul>
+      </div>
+      <form action="/comment" method="POST" align="center">
+        <p>Enter your name:</p>
+        <input type="text" id="name" name="name" value placeholder="Name" required><br>
+        <p>Enter your comment:</p>
+        <textarea name="text-input"></textarea>
+      <input type="submit"/>
+    </form>
+    </div>
   </div>
   <div id="footer-container">
     <div id="footer">
