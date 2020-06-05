@@ -13,15 +13,17 @@
     </div>
     <div id="step-projects">
       <h1>Step Project Browser!</h1>
-      <p id="display-name"><p>
-      <a href="" id="to-site" target="_blank"><img align="center" src="" id="site-screenshot" alt="Image of site"></a>
-      <div id="step-buttons">
-        <button id="step-prev" onclick="displayPrevious()">Previous</button>
-        <button id="step-rand" onclick="displayRandom()"> Random</button>
-        <button id="step-next" onclick="displayNext()">Next</button>
+      <div background="lightcyan">
+        <p id="display-name"><p>
+        <a href="" id="to-site" target="_blank"><img align="center" src="" id="site-screenshot" alt="Image of site"></a>
+        <div id="step-buttons">
+          <button id="step-prev" onclick="displayPrevious()">Previous</button>
+          <button id="step-rand" onclick="displayRandom()"> Random</button>
+          <button id="step-next" onclick="displayNext()">Next</button>
+        </div>
+        <h2>About the site:</h2>
+        <p id="step-about"></p>
       </div>
-      <h2>About the site:</h2>
-      <p id="step-about"></p>
       <form action="submit.html">
         </br>
         <input type="submit" value="Submit your site!"/>
@@ -65,7 +67,7 @@
         <p>Enter your name:</p>
         <input type="text" id="name" name="name" value placeholder="Name" required><br>
         <p>Enter your comment:</p>
-        <textarea name="text-input"></textarea>
+        <textarea name="text-input"></textarea><br>
       <input type="submit"/>
     </form>
     </div>

@@ -158,16 +158,21 @@ function getCommentsFromServlet() {
     for (let i = 0; i < comments.length; i++) {
       let content = comments[i];
       commentListElement.appendChild(
-        createListElement(content[0], content[1]));
+        createElement(content[0], content[1]));
     }
   });
 }
 
 
-/** Creates an <li> element containing text. */
-function createListElement(text,name) {
-  const liElement = document.createElement('li');
-  liElement.innerText = name + ": " + text;
-  return liElement;
+/** Creates an element containing name. */
+function createElement(name, text) {
+  const nameBox= document.createElement('h3');
+  nameBox.innerText = name;
+  const message = document.createElement('p');
+  message.innerText = text;
+  const body = document.createElement('div');
+  body.appendChild(nameBox);
+  body.appendChild(message);
+  return body;
 }
 
