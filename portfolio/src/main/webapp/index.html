@@ -6,27 +6,27 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="renderHeroText(); getCommentsFromServlet();">
+  <body onload="start();">
     <div class="landing">
       <div id="typewriter-text">
       </div>
     </div>
-    <div id="pull-data">
-      <form action="/data" method="POST">
-        <p>Enter your comment:</p>
-        <textarea name="text-input"></textarea>
-        <br/>
-        <br/>
-      <input type="submit"/>
-    </form>
-    <form action="/delete-comments" method="POST">
-      </br>
-      <input type="submit" value="Delete ALL comments"/>
-    </form>
-      <div id="message-container">
-        <p>Recent comments:</p>
-        <ul id="comments"></ul>
+    <div id="step-projects">
+      <h1>Step Project Browser!</h1>
+      <p id="display-name"><p>
+      <a href="" id="to-site" target="_blank"><img align="center" src="" id="site-screenshot" alt="Image of site"></a>
+      <div id="step-buttons">
+        <button id="step-prev" onclick="displayPrevious()">Previous</button>
+        <button id="step-rand" onclick="displayRandom()"> Random</button>
+        <button id="step-next" onclick="displayNext()">Next</button>
       </div>
+      <h2>About the site:</h2>
+      <p id="step-about"></p>
+      <form action="submit.html">
+        </br>
+        <input type="submit" value="Submit your site!"/>
+      </form>
+      <p id="step-total">A whopping 0 sites added!</p>
     </div>
     <div id="content">
       <h1>Kendrick Sharpe's Portfolio</h1>
@@ -50,7 +50,7 @@
       <img src="images/field.jpg" id="field" alt="Image of a field in San Jose"></img>
       <p>   Speaking of biking, I really like to go for bike rides.</p>
       <p>On Thursday before the 4 day memorial day weekend, I went for my longest ride ever.</p>
-      <p>Can you guess how far it was?</p>
+      <p>Can you guess how far it was (in miles!)?</p>
       <button onclick="guessBikeDistance()">Click To Take a Guess</button>
       <button onclick="revealBikeDistance()">Click For Answer</button>
       <p>     My most recent personal project is a stock portfolio manager. 

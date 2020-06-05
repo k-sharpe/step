@@ -34,49 +34,51 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  
-  // Comment number and size filters to prevent abuse.
-  private static final int MAX_COMMENT_LENGTH = 300;
-  private static final int MAX_COMMENT_COUNT = 10;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("Site").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    ArrayList<String> comments = new ArrayList<>();
-
-    Iterator<Entity> resultIterator = results.asIterable().iterator();
-    while (comments.size() < MAX_COMMENT_COUNT && resultIterator.hasNext()) {
-      String commentContents = (String) resultIterator.next().getProperty("Contents");
-      comments.add(commentContents);
+    ArrayList<ArrayList<String>> sites = new ArrayList<>();
+    
+    for (Entity site : results.asIterable()) {
+      boolean toDisplay = (boolean) site.getProperty("display");
+      if (toDisplay) {
+        ArrayList<String> siteData = new ArrayList<>();
+        siteData.add((String) site.getProperty("link"));
+        siteData.add((String) site.getProperty("description"));
+        siteData.add((String) site.getProperty("votes"));
+        siteData.add((String) site.getProperty("image"));
+        siteData.add((String) site.getProperty("name"));
+        sites.add(siteData);
+      }
     }
 
-    String json = convertToJson(comments);
+    String json = convertToJson(sites);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the input from the form.
+    String rawText = getParameter(request, "description");
+    String description = rawText.replace("\n", "").replace("\r", " ");
+    String link = getParameter(request, "link");
+    String name = getParameter(request, "name");
     long timestamp = System.currentTimeMillis();
-    ArrayList<String> comments = new ArrayList<>();
-    String rawText = getParameter(request, "text-input");
-    String text = rawText.replace("\n", "").replace("\r", " ");
+    Entity site = new Entity("Site");
 
-    // Cap on text length to prevent abuse.
-    if (text.length() > MAX_COMMENT_LENGTH) {
-      text = text.substring(0, MAX_COMMENT_LENGTH);
-    }
-    
-    Entity comment = new Entity("Comment");
-    comment.setProperty("Contents", text);
-    comment.setProperty("timestamp", timestamp);
-
+    site.setProperty("timestamp", timestamp);
+    site.setProperty("description", description);
+    site.setProperty("display", false);
+    site.setProperty("image", "");
+    site.setProperty("link", link);
+    site.setProperty("votes", "10");
+    site.setProperty("name", name);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(comment);
+    datastore.put(site);
 
     response.sendRedirect("/index.html");
   }
@@ -96,7 +98,7 @@ public class DataServlet extends HttpServlet {
   /**
    * Used to send json data to the client.
    */
-  private String convertToJson(ArrayList<String> comments) {
+  private String convertToJson(ArrayList<ArrayList<String>> comments) {
     Gson gson = new Gson();
     return gson.toJson(comments);
   }

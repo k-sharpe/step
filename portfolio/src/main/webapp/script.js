@@ -28,6 +28,8 @@ function addRandomGreeting() {
 }
 
 const typewriterText = ['My Passions', 'My Projects', 'My Portfolio'];
+var websiteData = [];
+var currentWebsiteDisplayed = 0;
 
 /**
  * To keep track of what is currently being typed out, recursive because of setTimeout.
@@ -94,21 +96,56 @@ function revealBikeDistance(){
   window.alert("A whopping 32 miles");
 }
 
-function getCommentsFromServlet() {
-  fetch('/data').then(response => response.json()).then((comments) => {
-    const commentListElement = document.getElementById('comments');
-    commentListElement.innerHTML = '';
-    for (let i = 0; i < comments.length; i++) {
-      commentListElement.appendChild(
-        createListElement(comments[i]));
+function displaySite() {
+  let siteDisplayable = websiteData[currentWebsiteDisplayed];
+  let url = siteDisplayable[0];
+  let description = siteDisplayable[1];
+  let votes = siteDisplayable[2];
+  let image = siteDisplayable[3];
+  let name = siteDisplayable[4];
+  document.getElementById("to-site").setAttribute("href", url);
+  document.getElementById("site-screenshot").src = image;
+  document.getElementById("step-about").innerText = description;
+  document.getElementById("display-name").innerText = name;
+  // force redraw of image
+  document.getElementById('site-screenshot').setAttribute("visibility", "hidden");
+  document.getElementById('site-screenshot').setAttribute("visibility", "visible");
+}
+
+function getDataFromServlet() {
+  fetch('/data').then(response => response.json()).then((sites) => {
+    for (let i = 0; i < sites.length; i++) {
+      websiteData.push(sites[i]);
     }
+    document.getElementById("step-total").innerText = "A whopping " + websiteData.length + " sites added!";
+    displaySite();
   });
 }
 
+function displayNext() {
+  if (currentWebsiteDisplayed >= websiteData.length - 1) {
+    currentwebsiteDisplayed = 0;
+  } else {
+    currentWebsiteDisplayed++;
+  }
+  displaySite();
+}
 
-/** Creates an <li> element containing text. */
-function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+function displayPrevious() {
+  if(currentWebsiteDisplayed <= 0) {
+    currentwebsiteDisplayed = websiteData.length - 1;
+  } else {
+    currentWebsiteDisplayed--;
+  }
+  displaySite();
+}
+
+function displayRandom() {
+  currentWebsiteDisplayed = Math.floor(Math.random() * (websiteData.length)); 
+  displaySite();
+}
+
+function start() {
+  renderHeroText();
+  getDataFromServlet();
 }
