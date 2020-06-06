@@ -168,11 +168,13 @@ function getCommentsFromServlet() {
 function createElement(name, text) {
   const nameBox= document.createElement('h3');
   nameBox.innerText = name;
+  nameBox.setAttribute("class", "comment-head");
+  nameBox.setAttribute("align", "left");
   const message = document.createElement('p');
   message.innerText = text;
   const body = document.createElement('div');
+  body.setAttribute("class", "comment")
   body.appendChild(nameBox);
   body.appendChild(message);
   return body;
 }
-

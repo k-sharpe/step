@@ -14,6 +14,17 @@
   margin-bottom: 20px;
 }
 
+.comment-head {
+  padding-left: 20px;
+  font: 20px verdana, serif;
+}
+
+.comment {
+  background: rgb(231, 247, 255);
+  margin-right: 20px;
+  border: 2px solid rgb(195, 236, 255);
+}
+
 #step-projects {
   text-align: center;
   align-content: center;
@@ -40,6 +51,7 @@ body {
   height: 350px;
   border: 3px solid lightslategrey;
 }
+
 #footer {
   margin-left: auto;
   margin-right: auto;
