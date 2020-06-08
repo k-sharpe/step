@@ -149,6 +149,7 @@ function start() {
   renderHeroText();
   getDataFromServlet();
   getCommentsFromServlet();
+  loginLoad();
 }
 
 function getCommentsFromServlet() {
@@ -176,5 +177,39 @@ function createElement(name, text) {
   body.setAttribute("class", "comment")
   body.appendChild(nameBox);
   body.appendChild(message);
+  return body;
+}
+
+function loginLoad() {
+  fetch('/login').then(response => response.json()).then((data) => {
+    const submissionForm = document.getElementById('comment-submission-form');
+    const loginLogoutParentElement = document.getElementById("login-logout-container");
+    const submissionContainer = document.getElementById("comment-submission-holder");
+    const loggedIn = data[0]==="1";
+    const redirectURL = data[1];
+    if (loggedIn) {
+      submissionContainer.style.display = "block";
+      loginLogoutParentElement.appendChild(createLoginLogoutElement(loggedIn, redirectURL, data[2]));
+    } else {
+      submissionContainer.style.display = "none";
+      loginLogoutParentElement.appendChild(createLoginLogoutElement(loggedIn, redirectURL));
+    }
+  });
+}
+
+function createLoginLogoutElement(loggedIn, targetURL, userAddress="") {
+  const body = document.createElement('div');
+  const message = document.createElement('p');
+  const link = document.createElement('a');
+  link.setAttribute('href', targetURL);
+  if (loggedIn) {
+    message.innerText = "Welcome, " + userAddress;
+    link.innerText = "Click here to log out";
+  } else {
+    message.innerText = "Wish to leave a comment? Click the link to log in. ";
+    link.innerText = "Click here to log in using Google";
+  }
+  body.appendChild(message);
+  body.appendChild(link);
   return body;
 }

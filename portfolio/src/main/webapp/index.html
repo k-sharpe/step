@@ -63,13 +63,17 @@
         <p>Recent comments:</p>
         <ul id="comments"></ul>
       </div>
-      <form action="/comment" method="POST" align="center">
+      <div id="comment-submission-holder">
+      <form action="/comment" id="comment-submission-form" method="POST" align="center">
         <p>Enter your name:</p>
         <input type="text" id="name" name="name" value placeholder="Name" required><br>
         <p>Enter your comment:</p>
         <textarea name="text-input"></textarea><br>
-      <input type="submit"/>
-    </form>
+        <input type="submit"/>
+      </form>
+      </div>
+      <div id="login-logout-container">
+      </div>
     </div>
   </div>
   <div id="footer-container">

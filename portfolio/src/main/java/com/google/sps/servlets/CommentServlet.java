@@ -80,10 +80,10 @@ public class CommentServlet extends HttpServlet {
 
   // limit abuse on the forms.
   private static String stringCleaner(String raw) {
-    if (raw.length() > MAX_COMMENT_LENGTH) {
-      raw = raw.substring(0, MAX_COMMENT_LENGTH);
+    String clean = raw.replace("\n", "").replace("\r", " ").replace(";", "").replace("<", "").replace(">", "");
+    if (clean.length() > MAX_COMMENT_LENGTH) {
+      clean = clean.substring(0, MAX_COMMENT_LENGTH);
     }
-    String clean = raw.replace("\n", "").replace("\r", " ").replace(";", "").replace("<", "").replace(">", "")
     return clean;
   }
 
