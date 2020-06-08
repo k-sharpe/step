@@ -148,4 +148,68 @@ function displayRandom() {
 function start() {
   renderHeroText();
   getDataFromServlet();
+  getCommentsFromServlet();
+  loginLoad();
+}
+
+function getCommentsFromServlet() {
+  fetch('/comment').then(response => response.json()).then((comments) => {
+    const commentListElement = document.getElementById('comments');
+    commentListElement.innerHTML = '';
+    for (let i = 0; i < comments.length; i++) {
+      let content = comments[i];
+      commentListElement.appendChild(
+        createElement(content[0], content[1]));
+    }
+  });
+}
+
+
+/** Creates an element containing name. */
+function createElement(name, text) {
+  const nameBox= document.createElement('h3');
+  nameBox.innerText = name;
+  nameBox.setAttribute("class", "comment-head");
+  nameBox.setAttribute("align", "left");
+  const message = document.createElement('p');
+  message.innerText = text;
+  const body = document.createElement('div');
+  body.setAttribute("class", "comment")
+  body.appendChild(nameBox);
+  body.appendChild(message);
+  return body;
+}
+
+function loginLoad() {
+  fetch('/login').then(response => response.json()).then((data) => {
+    const submissionForm = document.getElementById('comment-submission-form');
+    const loginLogoutParentElement = document.getElementById("login-logout-container");
+    const submissionContainer = document.getElementById("comment-submission-holder");
+    const loggedIn = data[0]==="1";
+    const redirectURL = data[1];
+    if (loggedIn) {
+      submissionContainer.style.display = "block";
+      loginLogoutParentElement.appendChild(createLoginLogoutElement(loggedIn, redirectURL, data[2]));
+    } else {
+      submissionContainer.style.display = "none";
+      loginLogoutParentElement.appendChild(createLoginLogoutElement(loggedIn, redirectURL));
+    }
+  });
+}
+
+function createLoginLogoutElement(loggedIn, targetURL, userAddress="") {
+  const body = document.createElement('div');
+  const message = document.createElement('p');
+  const link = document.createElement('a');
+  link.setAttribute('href', targetURL);
+  if (loggedIn) {
+    message.innerText = "Welcome, " + userAddress;
+    link.innerText = "Click here to log out";
+  } else {
+    message.innerText = "Wish to leave a comment? Click the link to log in. ";
+    link.innerText = "Click here to log in using Google";
+  }
+  body.appendChild(message);
+  body.appendChild(link);
+  return body;
 }
