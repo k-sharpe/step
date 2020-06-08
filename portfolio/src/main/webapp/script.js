@@ -147,7 +147,7 @@ function displayRandom() {
 
 function start() {
   renderHeroText();
-  //getDataFromServlet();
+  getDataFromServlet();
   getCommentsFromServlet();
 }
 

@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -28,6 +29,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/comment")
 public class CommentServlet extends HttpServlet {
@@ -35,13 +37,13 @@ public class CommentServlet extends HttpServlet {
   // Comment number and size filters to prevent abuse.
   private static final int MAX_COMMENT_LENGTH = 300;
   private static final int MAX_COMMENT_COUNT = 10;
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String[]> comments = new ArrayList<>();
-    int foreachCounter = 0;
 
     Iterator<Entity> resultIterator = results.asIterable().iterator();
     while (comments.size() < MAX_COMMENT_COUNT && resultIterator.hasNext()) {
@@ -56,19 +58,16 @@ public class CommentServlet extends HttpServlet {
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     long timestamp = System.currentTimeMillis();
     ArrayList<String> comments = new ArrayList<>();
     String rawText = getParameter(request, "text-input");
-    String text = rawText.replace("\n", "").replace("\r", " ").replace(";", "").replace("<", "").replace(">", "");
-    String name = getParameter(request, "name");
-    name = name.replace("\n", "").replace("\r", " ").replace(";", "").replace("<", "").replace(">", "");
-    // Cap on text length to prevent abuse.
-    if (text.length() > MAX_COMMENT_LENGTH) {
-      text = text.substring(0, MAX_COMMENT_LENGTH);
-    }
+    String text = stringCleaner(rawText);
+    String rawName = getParameter(request, "name");
+    String name = stringCleaner(rawName);
     
     Entity comment = new Entity("Comment");
     comment.setProperty("Contents", text);
@@ -78,6 +77,16 @@ public class CommentServlet extends HttpServlet {
     datastore.put(comment);
     response.sendRedirect("/index.html");
   }
+
+  // limit abuse on the forms.
+  private static String stringCleaner(String raw) {
+    if (raw.length() > MAX_COMMENT_LENGTH) {
+      raw = raw.substring(0, MAX_COMMENT_LENGTH);
+    }
+    String clean = raw.replace("\n", "").replace("\r", " ").replace(";", "").replace("<", "").replace(">", "")
+    return clean;
+  }
+
   /**
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client (From the demo)
@@ -89,6 +98,7 @@ public class CommentServlet extends HttpServlet {
     }
     return value;
   }
+
   /**
    * Used to send json data to the client.
    */
