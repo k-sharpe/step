@@ -1,4 +1,4 @@
-#content, #pull-data {
+#content, #pull-data, #map-container {
   text-align: left;
   align-content: left;
   margin-left: auto;
@@ -17,6 +17,12 @@
 .comment-head {
   padding-left: 20px;
   font: 16px verdana, serif;
+}
+
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 500px;
 }
 
 .comment {
@@ -139,7 +145,7 @@ body {
   background-color: beige;
 }
 
-img {
+.disp-img {
   animation: imggrow 2.5s 1;
   max-width: 600px;
   max-height: 1000px;

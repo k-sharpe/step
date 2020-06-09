@@ -150,6 +150,7 @@ function start() {
   getDataFromServlet();
   getCommentsFromServlet();
   loginLoad();
+  createMap();
 }
 
 function getCommentsFromServlet() {
@@ -197,6 +198,13 @@ function loginLoad() {
   });
 }
 
+function createMap() {
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 37.422, lng: -122.084}, zoom: 16});
+}
+
+// api key: 
 function createLoginLogoutElement(loggedIn, targetURL, userAddress="") {
   const body = document.createElement('div');
   const message = document.createElement('p');

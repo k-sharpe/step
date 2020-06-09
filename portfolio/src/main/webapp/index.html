@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_REL00vIY8e0JcQ20JxqPzHrkn6WQMrg"></script>
     <script src="script.js"></script>
   </head>
   <body onload="start();">
@@ -47,9 +48,9 @@
       <div id="greeting-container"></div>
       <p>   In addition, I have a few cool things to share. First, </p>
       <p>Here's a picture of my dog, Karlos. </p>
-      <img src="images/dog.png" alt="Image of Karlos the dog."></img>
+      <img class="disp-img" src="images/dog.png" alt="Image of Karlos the dog."></img>
       <p>Here's a picture I like that I took on a bike ride! </p>
-      <img src="images/field.jpg" id="field" alt="Image of a field in San Jose"></img>
+      <img class="disp-img" src="images/field.jpg" id="field" alt="Image of a field in San Jose"></img>
       <p>   Speaking of biking, I really like to go for bike rides.</p>
       <p>On Thursday before the 4 day memorial day weekend, I went for my longest ride ever.</p>
       <p>Can you guess how far it was (in miles!)?</p>
@@ -74,6 +75,20 @@
       </div>
       <div id="login-logout-container">
       </div>
+    </div>
+    <div id="map-container">
+      <div id="map"></div>
+      <script>
+        var map;
+        function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 8
+         });
+        }
+      </script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_REL00vIY8e0JcQ20JxqPzHrkn6WQMrg&callback=initMap"
+      async defer></script>
     </div>
   </div>
   <div id="footer-container">
