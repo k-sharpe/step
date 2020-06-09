@@ -19,7 +19,7 @@
   font: 16px verdana, serif;
 }
 
-#map {
+#map-google-headquarters {
   border: thin solid black;
   height: 500px;
   width: 500px;
@@ -145,7 +145,7 @@ body {
   background-color: beige;
 }
 
-.disp-img {
+.display-img {
   animation: imggrow 2.5s 1;
   max-width: 600px;
   max-height: 1000px;
