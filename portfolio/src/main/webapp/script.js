@@ -200,19 +200,17 @@ function loginLoad() {
 
 function createMap() {
   var centerBayArea = {lat: 37.7857, lng: -122.4011};
-  const map = new google.maps.Map(
-      document.getElementById('map-google-headquarters'),
-      
-      {center: centerBayArea, zoom: 9, mapTypeId: 'satellite'});
-  map.setTilt(45);
-  var marker = new google.maps.Marker({position: centerBayArea, map: map, title: "Bay Area"});
-  var infowindow = new google.maps.InfoWindow({content: "This is the bay!"});
+  const bayMap = new google.maps.Map(
+    document.getElementById('map-google-headquarters'),
+    {center: centerBayArea, zoom: 9, mapTypeId: 'satellite'});
+  bayMap.setTilt(45);
+  const centerBayMarker = new google.maps.Marker({position: centerBayArea, map: bayMap, title: "Bay Area"});
+  const infowindow = new google.maps.InfoWindow({content: "This is the bay!"});
   marker.addListener('click', function() {
-    infowindow.open(map, marker);
-    });  
+    infowindow.open(bayMap, centerBayMarker);
+  });  
 }
 
-// api key: 
 function createLoginLogoutElement(loggedIn, targetURL, userAddress="") {
   const body = document.createElement('div');
   const message = document.createElement('p');
