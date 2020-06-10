@@ -150,6 +150,7 @@ function start() {
   getDataFromServlet();
   getCommentsFromServlet();
   loginLoad();
+  createMap();
 }
 
 function getCommentsFromServlet() {
@@ -195,6 +196,19 @@ function loginLoad() {
       loginLogoutParentElement.appendChild(createLoginLogoutElement(loggedIn, redirectURL));
     }
   });
+}
+
+function createMap() {
+  const centerBayArea = {lat: 37.7857, lng: -122.4011};
+  const bayMap = new google.maps.Map(
+    document.getElementById('map-google-headquarters'),
+    {center: centerBayArea, zoom: 9, mapTypeId: 'satellite'});
+  bayMap.setTilt(45);
+  const centerBayMarker = new google.maps.Marker({position: centerBayArea, map: bayMap, title: "Bay Area"});
+  const infowindow = new google.maps.InfoWindow({content: "This is the bay!"});
+  marker.addListener('click', function() {
+    infowindow.open(bayMap, centerBayMarker);
+  });  
 }
 
 function createLoginLogoutElement(loggedIn, targetURL, userAddress="") {
