@@ -199,7 +199,7 @@ function loginLoad() {
 }
 
 function createMap() {
-  var centerBayArea = {lat: 37.7857, lng: -122.4011};
+  const centerBayArea = {lat: 37.7857, lng: -122.4011};
   const bayMap = new google.maps.Map(
     document.getElementById('map-google-headquarters'),
     {center: centerBayArea, zoom: 9, mapTypeId: 'satellite'});
