@@ -199,9 +199,17 @@ function loginLoad() {
 }
 
 function createMap() {
+  var centerBayArea = {lat: 37.7857, lng: -122.4011};
   const map = new google.maps.Map(
       document.getElementById('map-google-headquarters'),
-      {center: {lat: 37.422, lng: -122.084}, zoom: 16});
+      
+      {center: centerBayArea, zoom: 9, mapTypeId: 'satellite'});
+  map.setTilt(45);
+  var marker = new google.maps.Marker({position: centerBayArea, map: map, title: "Bay Area"});
+  var infowindow = new google.maps.InfoWindow({content: "This is the bay!"});
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+    });  
 }
 
 // api key: 
