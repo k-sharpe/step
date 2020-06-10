@@ -198,6 +198,14 @@ function loginLoad() {
   });
 }
 
+function getBirthPicture(year=2000, month=12, date=25) {
+  fetch("https://api.nasa.gov/planetary/apod?api_key=dFdwfqC0hgJXnZtm85spG7D1lfp1sIYbAtk5nsbw")
+  .then(function(response) {
+  // SUCCESS RESPONSE
+    console.log(response.json());
+  })
+}
+
 function createMap() {
   const centerBayArea = {lat: 37.7857, lng: -122.4011};
   const bayMap = new google.maps.Map(
