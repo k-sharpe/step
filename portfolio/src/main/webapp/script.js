@@ -23,11 +23,12 @@ function addRandomGreeting() {
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
+  const greetingContainer = document.getElementById("greeting-container");
   greetingContainer.innerText = greeting;
 }
 
-const typewriterText = ['My Passions', 'My Projects', 'My Portfolio'];
+const nasaLink = "https://api.nasa.gov/planetary/apod?api_key=dFdwfqC0hgJXnZtm85spG7D1lfp1sIYbAtk5nsbw&date=";
+const typewriterText = ["My Passions", "My Projects", "My Portfolio"];
 var websiteData = [];
 var currentWebsiteDisplayed = 0;
 
@@ -108,12 +109,12 @@ function displaySite() {
   document.getElementById("step-about").innerText = description;
   document.getElementById("display-name").innerText = name;
   // force redraw of image
-  document.getElementById('site-screenshot').setAttribute("visibility", "hidden");
-  document.getElementById('site-screenshot').setAttribute("visibility", "visible");
+  document.getElementById("site-screenshot").setAttribute("visibility", "hidden");
+  document.getElementById("site-screenshot").setAttribute("visibility", "visible");
 }
 
 function getDataFromServlet() {
-  fetch('/data').then(response => response.json()).then((sites) => {
+  fetch("/data").then(response => response.json()).then((sites) => {
     for (let i = 0; i < sites.length; i++) {
       websiteData.push(sites[i]);
     }
@@ -154,9 +155,9 @@ function start() {
 }
 
 function getCommentsFromServlet() {
-  fetch('/comment').then(response => response.json()).then((comments) => {
-    const commentListElement = document.getElementById('comments');
-    commentListElement.innerHTML = '';
+  fetch("/comment").then(response => response.json()).then((comments) => {
+    const commentListElement = document.getElementById("comments");
+    commentListElement.innerHTML = "";
     for (let i = 0; i < comments.length; i++) {
       let content = comments[i];
       commentListElement.appendChild(
@@ -168,13 +169,13 @@ function getCommentsFromServlet() {
 
 /** Creates an element containing name. */
 function createElement(name, text) {
-  const nameBox= document.createElement('h3');
+  const nameBox= document.createElement("h3");
   nameBox.innerText = name;
   nameBox.setAttribute("class", "comment-head");
   nameBox.setAttribute("align", "left");
-  const message = document.createElement('p');
+  const message = document.createElement("p");
   message.innerText = text;
-  const body = document.createElement('div');
+  const body = document.createElement("div");
   body.setAttribute("class", "comment")
   body.appendChild(nameBox);
   body.appendChild(message);
@@ -182,8 +183,8 @@ function createElement(name, text) {
 }
 
 function loginLoad() {
-  fetch('/login').then(response => response.json()).then((data) => {
-    const submissionForm = document.getElementById('comment-submission-form');
+  fetch("/login").then(response => response.json()).then((data) => {
+    const submissionForm = document.getElementById("comment-submission-form");
     const loginLogoutParentElement = document.getElementById("login-logout-container");
     const submissionContainer = document.getElementById("comment-submission-holder");
     const loggedIn = data[0]==="1";
@@ -201,48 +202,55 @@ function loginLoad() {
 function getBirthPicture() {
   let birthday = document.getElementById("birthday").value;
   let birthdayString = String(birthday);
-  if(parseInt(birthdayString.substr(0, 4)) < 1995) {
-    let randomYear = 1996 + Math.floor(Math.random() * 16);
-    birthdayString = birthdayString.replace(birthdayString.substr(0, 4), String(randomYear));
-  }
-  if(validateBirthday(birthdayString)) {
-    document.getElementById('birthday-bad-format').style.display = "none";
-    fetch("https://api.nasa.gov/planetary/apod?api_key=dFdwfqC0hgJXnZtm85spG7D1lfp1sIYbAtk5nsbw&date=" + birthdayString)
+  if (isValidBirthday(birthdayString)) {
+    birthdayString = yearAdjustBirthday(birthdayString);
+    document.getElementById("birthday-bad-format").style.display = "none";
+    fetch(nasaLink+birthdayString)
     .then(response => response.json()).then((result) =>{
-      console.log(result);
       document.getElementById("birthday-photo").src = result.hdurl;
       document.getElementById("nasa-info").innerText = result.explanation;
       document.getElementById("nasa-title").innerText = result.title;
     })
   } else {
-    document.getElementById('birthday-bad-format').style.display = "block";
+    document.getElementById("birthday-bad-format").style.display = "block";
   }
   return false;
 }
 
-function validateBirthday(input) {
+function yearAdjustBirthday(birthday) {
+  if (parseInt(birthday.substr(0, 4)) < 1995) {
+    let randomYear = 1996 + Math.floor(Math.random() * 16);
+    birthday = birthday.replace(birthday.substr(0, 4), String(randomYear));
+  }
+  return birthday;
+}
+
+/**
+ * Validate String from birthday field and determine it follows a valid yyyy-mm-dd structure.
+ */
+function isValidBirthday(input) {
   let pattern = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
-  return pattern.test(input) && input.length == 10;
+  return pattern.test(input) && input.length === 10;
 }
 
 function createMap() {
   const centerBayArea = {lat: 37.7857, lng: -122.4011};
   const bayMap = new google.maps.Map(
-    document.getElementById('map-google-headquarters'),
-    {center: centerBayArea, zoom: 9, mapTypeId: 'satellite'});
+    document.getElementById("map-google-headquarters"),
+    {center: centerBayArea, zoom: 9, mapTypeId: "satellite"});
   bayMap.setTilt(45);
   const centerBayMarker = new google.maps.Marker({position: centerBayArea, map: bayMap, title: "Bay Area"});
   const infowindow = new google.maps.InfoWindow({content: "This is the bay!"});
-  centerBayMarker.addListener('click', function() {
+  centerBayMarker.addListener("click", function() {
     infowindow.open(bayMap, centerBayMarker);
   });  
 }
 
 function createLoginLogoutElement(loggedIn, targetURL, userAddress="") {
-  const body = document.createElement('div');
-  const message = document.createElement('p');
-  const link = document.createElement('a');
-  link.setAttribute('href', targetURL);
+  const body = document.createElement("div");
+  const message = document.createElement("p");
+  const link = document.createElement("a");
+  link.setAttribute("href", targetURL);
   if (loggedIn) {
     message.innerText = "Welcome, " + userAddress;
     link.innerText = "Click here to log out";

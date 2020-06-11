@@ -70,15 +70,15 @@
       </div>
       <div id="birth-form">
         <form id="birth-photo" onsubmit="getBirthPicture(); return false">
-        <p>Please enter your birthday to see nasa's photo of the day on your birthday!</p>
-        <p2>Note: Nasa's photo of the day began July 1995. All dates past this will not work, and a random image will be shown instead.</p2>
-        <label for="birthday">Birthday:</label><br>
-        <input type="text" id="birthday" name="birthday" value placeholder="YYYY-MM-DD" required><br>
-        <input type="submit" value="Show me my photo!"/>
-      </form>
+          <p>Please enter your birthday to see nasa's photo of the day on your birthday!</p>
+          <p2>Note: Nasa's photo of the day began July 1995. All dates before this will not work, and a random image will be shown instead.</p2>
+          <label for="birthday">Birthday:</label><br>
+          <input type="text" id="birthday" name="birthday" value placeholder="YYYY-MM-DD" required><br>
+          <input type="submit" value="Show me my photo!"/>
+        </form>
       </div>
       <div id="Error">
-        <p id="birthday-bad-format">Improper format. YYYY-MM-DDShould look like this: 1980-12-01</p>
+        <p id="birthday-bad-format">Improper format. YYYY-MM-DD Should look like this: 1980-12-01</p>
       </div>
     </div>
     <div id="pull-data" align="center">
