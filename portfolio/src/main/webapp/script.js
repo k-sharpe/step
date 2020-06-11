@@ -198,12 +198,31 @@ function loginLoad() {
   });
 }
 
-function getBirthPicture(year=2000, month=12, date=25) {
-  fetch("https://api.nasa.gov/planetary/apod?api_key=dFdwfqC0hgJXnZtm85spG7D1lfp1sIYbAtk5nsbw")
-  .then(function(response) {
-  // SUCCESS RESPONSE
-    console.log(response.json());
-  })
+function getBirthPicture() {
+  let birthday = document.getElementById("birthday").value;
+  let birthdayString = String(birthday);
+  if(parseInt(birthdayString.substr(0, 4)) < 1995) {
+    let randomYear = 1996 + Math.floor(Math.random() * 16);
+    birthdayString = birthdayString.replace(birthdayString.substr(0, 4), String(randomYear));
+  }
+  if(validateBirthday(birthdayString)) {
+    document.getElementById('birthday-bad-format').style.display = "none";
+    fetch("https://api.nasa.gov/planetary/apod?api_key=dFdwfqC0hgJXnZtm85spG7D1lfp1sIYbAtk5nsbw&date=" + birthdayString)
+    .then(response => response.json()).then((result) =>{
+      console.log(result);
+      document.getElementById("birthday-photo").src = result.hdurl;
+      document.getElementById("nasa-info").innerText = result.explanation;
+      document.getElementById("nasa-title").innerText = result.title;
+    })
+  } else {
+    document.getElementById('birthday-bad-format').style.display = "block";
+  }
+  return false;
+}
+
+function validateBirthday(input) {
+  let pattern = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
+  return pattern.test(input) && input.length == 10;
 }
 
 function createMap() {
@@ -214,7 +233,7 @@ function createMap() {
   bayMap.setTilt(45);
   const centerBayMarker = new google.maps.Marker({position: centerBayArea, map: bayMap, title: "Bay Area"});
   const infowindow = new google.maps.InfoWindow({content: "This is the bay!"});
-  marker.addListener('click', function() {
+  centerBayMarker.addListener('click', function() {
     infowindow.open(bayMap, centerBayMarker);
   });  
 }

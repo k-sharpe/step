@@ -14,6 +14,26 @@
   margin-bottom: 20px;
 }
 
+#photo-of-the-day {
+  text-align: center;
+  align-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  background-color: white;
+  border-left: 3px solid seagreen;
+  border-bottom: 3px solid seagreen;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  padding-left: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#birthday-bad-format {
+  color: red;
+  display: none;
+}
 .comment-head {
   padding-left: 20px;
   font: 16px verdana, serif;
@@ -51,7 +71,14 @@ body {
   background-color: antiquewhite;
 }
 
-#site-screenshot {
+#nasa-body {
+  border: 2px solid black;
+  background-color: lightgray;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-right: 20px;
+}
+#site-screenshot, #birthday-photo {
   animation: none;
   width: 625px;
   height: 350px;
