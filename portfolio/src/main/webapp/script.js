@@ -187,7 +187,7 @@ function loginLoad() {
     const submissionForm = document.getElementById("comment-submission-form");
     const loginLogoutParentElement = document.getElementById("login-logout-container");
     const submissionContainer = document.getElementById("comment-submission-holder");
-    const loggedIn = data[0]==="1";
+    const loggedIn = data[0] === "1";
     const redirectURL = data[1];
     if (loggedIn) {
       submissionContainer.style.display = "block";
@@ -205,8 +205,8 @@ function getBirthPicture() {
   if (isValidBirthday(birthdayString)) {
     birthdayString = yearAdjustBirthday(birthdayString);
     document.getElementById("birthday-bad-format").style.display = "none";
-    fetch(nasaLink+birthdayString)
-    .then(response => response.json()).then((result) =>{
+    fetch(nasaLink + birthdayString)
+    .then(response => response.json()).then((result) => {
       document.getElementById("birthday-photo").src = result.hdurl;
       document.getElementById("nasa-info").innerText = result.explanation;
       document.getElementById("nasa-title").innerText = result.title;
@@ -217,10 +217,19 @@ function getBirthPicture() {
   return false;
 }
 
+// Adjust birthday year due to limitations by nasa's photo of the day (Started Jul 1, 1995).
 function yearAdjustBirthday(birthday) {
-  if (parseInt(birthday.substr(0, 4)) < 1995) {
+  const year = parseInt(birthday.substr(0, 4));
+  const month = parseInt(birthday.substr(5, 2));
+  const day = parseInt(birthday.substr(8, 2));
+  const leapYears = [1996, 2000, 2004, 2008, 2012, 2016, 2020];
+  if (year < 1995 || (year === 1995 && month < 7)) {
     let randomYear = 1996 + Math.floor(Math.random() * 16);
     birthday = birthday.replace(birthday.substr(0, 4), String(randomYear));
+  } 
+  if (month === 2 && day === 29 && !leapYears.includes(year)) {
+    let randomLeapYear = leapYears[Math.floor(Math.random() * 6)];
+    birthday = birthday.replace(birthday.substr(0, 4), String(randomLeapYear));
   }
   return birthday;
 }
@@ -230,7 +239,24 @@ function yearAdjustBirthday(birthday) {
  */
 function isValidBirthday(input) {
   let pattern = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
-  return pattern.test(input) && input.length === 10;
+  if (pattern.test(input) && input.length === 10) {
+    let month = parseInt(input.substr(5, 2));
+    let day = parseInt(input.substr(8, 2));
+    // verify 30-day cap for 30 day months, no leap adjustment.
+    if (month === 2 && day > 29) {
+      return false;
+    } else if (month === 4 && day > 30) {
+      return false;
+    } else if (month === 6 && day > 30) {
+      return false;
+    } else if (month === 9 && day > 30) {
+      return false;
+    } else if (month === 11 && day > 30) {
+      return false;
+    }
+    return true;
+  }
+  return false;
 }
 
 function createMap() {
