@@ -59,6 +59,28 @@
       <p>     My most recent personal project is a stock portfolio manager. 
         It's waiting to be worked on once the internship ends, and currently doesn't work! </p>
     </div>
+    <div id="photo-of-the-day">
+      <h1>NASA's Photo Of The Day!</h1>
+        <div id="nasa-body">
+          <div id="photo-and-messages">
+          <h1 id="nasa-title"></h1>
+          <img id="birthday-photo">
+          <p id="nasa-info"></p>
+        </div>
+      </div>
+      <div id="birth-form">
+        <form id="birth-photo" onsubmit="getBirthPicture(); return false">
+          <p>Please enter your birthday to see nasa's photo of the day on your birthday!</p>
+          <p3>Note: Nasa's photo of the day began July 1995. All dates before this will not work, and a random image will be shown instead.</p3>
+          <label for="birthday">Birthday:</label><br>
+          <input type="text" id="birthday" name="birthday" value placeholder="YYYY-MM-DD" required><br>
+          <input type="submit" value="Show me my photo!"/>
+        </form>
+      </div>
+      <div id="Error">
+        <p id="birthday-bad-format">Improper format. YYYY-MM-DD Should look like this: 1980-12-01.</p>
+      </div>
+    </div>
     <div id="pull-data" align="center">
       <div id="message-container" align="center">
         <p>Recent comments:</p>

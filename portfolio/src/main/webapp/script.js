@@ -23,11 +23,12 @@ function addRandomGreeting() {
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
+  const greetingContainer = document.getElementById("greeting-container");
   greetingContainer.innerText = greeting;
 }
 
-const typewriterText = ['My Passions', 'My Projects', 'My Portfolio'];
+const nasaLink = "https://api.nasa.gov/planetary/apod?api_key=dFdwfqC0hgJXnZtm85spG7D1lfp1sIYbAtk5nsbw&date=";
+const typewriterText = ["My Passions", "My Projects", "My Portfolio"];
 var websiteData = [];
 var currentWebsiteDisplayed = 0;
 
@@ -61,6 +62,7 @@ function reverseHeroText(currentCharIndex, curTypewriterTextIndex) {
     setTimeout(reverseHeroText, /* milliseconds= */ 50, --currentCharIndex, curTypewriterTextIndex);
   }
 }
+
 /**
  * Easiest way to handle cascading ranges, switch seemed better for specific values.
  */
@@ -108,12 +110,12 @@ function displaySite() {
   document.getElementById("step-about").innerText = description;
   document.getElementById("display-name").innerText = name;
   // force redraw of image
-  document.getElementById('site-screenshot').setAttribute("visibility", "hidden");
-  document.getElementById('site-screenshot').setAttribute("visibility", "visible");
+  document.getElementById("site-screenshot").setAttribute("visibility", "hidden");
+  document.getElementById("site-screenshot").setAttribute("visibility", "visible");
 }
 
 function getDataFromServlet() {
-  fetch('/data').then(response => response.json()).then((sites) => {
+  fetch("/data").then(response => response.json()).then((sites) => {
     for (let i = 0; i < sites.length; i++) {
       websiteData.push(sites[i]);
     }
@@ -154,9 +156,9 @@ function start() {
 }
 
 function getCommentsFromServlet() {
-  fetch('/comment').then(response => response.json()).then((comments) => {
-    const commentListElement = document.getElementById('comments');
-    commentListElement.innerHTML = '';
+  fetch("/comment").then(response => response.json()).then((comments) => {
+    const commentListElement = document.getElementById("comments");
+    commentListElement.innerHTML = "";
     for (let i = 0; i < comments.length; i++) {
       let content = comments[i];
       commentListElement.appendChild(
@@ -168,13 +170,13 @@ function getCommentsFromServlet() {
 
 /** Creates an element containing name. */
 function createElement(name, text) {
-  const nameBox= document.createElement('h3');
+  const nameBox= document.createElement("h3");
   nameBox.innerText = name;
   nameBox.setAttribute("class", "comment-head");
   nameBox.setAttribute("align", "left");
-  const message = document.createElement('p');
+  const message = document.createElement("p");
   message.innerText = text;
-  const body = document.createElement('div');
+  const body = document.createElement("div");
   body.setAttribute("class", "comment")
   body.appendChild(nameBox);
   body.appendChild(message);
@@ -182,11 +184,11 @@ function createElement(name, text) {
 }
 
 function loginLoad() {
-  fetch('/login').then(response => response.json()).then((data) => {
-    const submissionForm = document.getElementById('comment-submission-form');
+  fetch("/login").then(response => response.json()).then((data) => {
+    const submissionForm = document.getElementById("comment-submission-form");
     const loginLogoutParentElement = document.getElementById("login-logout-container");
     const submissionContainer = document.getElementById("comment-submission-holder");
-    const loggedIn = data[0]==="1";
+    const loggedIn = data[0] === "1";
     const redirectURL = data[1];
     if (loggedIn) {
       submissionContainer.style.display = "block";
@@ -198,24 +200,95 @@ function loginLoad() {
   });
 }
 
+/**
+ * @return {boolean} False to prevent page refresh when called from birthday form. 
+ */
+function getBirthPicture() {
+  let birthday = document.getElementById("birthday").value;
+  let birthdayString = String(birthday);
+  let birthdayObject = {
+    year: parseInt(birthdayString.substr(0, 4)),
+    month: parseInt(birthdayString.substr(5, 2)),
+    day: parseInt(birthdayString.substr(8, 2)),
+    birthdayString: function () {
+      return String(this.year) + "-" + String(this.month) + "-" + String(this.day);
+    }
+  };
+  if (isValidBirthday(birthdayObject)) {
+    birthdayAdjust(birthdayObject);
+    document.getElementById("birthday-bad-format").style.display = "none";
+    fetch(nasaLink + birthdayObject.birthdayString())
+    .then(response => response.json()).then((result) => {
+      document.getElementById("birthday-photo").src = result.hdurl;
+      document.getElementById("nasa-info").innerText = result.explanation;
+      document.getElementById("nasa-title").innerText = result.title;
+    })
+  } else {
+    document.getElementById("birthday-bad-format").style.display = "block";
+  }
+  return false;
+}
+
+/**
+ * Adjust birthday year due to limitations by nasa's photo of the day (Started Jul 1, 1995).
+ * Adjust leap year dates to be valid.
+ * TODO: Use a date object
+ */
+function birthdayAdjust(birthday) {
+  const leapYears = [1996, 2000, 2004, 2008, 2012, 2016, 2020];
+  if (birthday.year < 1995 || (birthday.year === 1995 && birthday.month < 7)) {
+    let randomYear = 1996 + Math.floor(Math.random() * 16);
+    birthday.year = randomYear;
+  } 
+  if (birthday.month === 2 && birthday.day === 29 && !leapYears.includes(birthday.year)) {
+    let randomLeapYear = leapYears[Math.floor(Math.random() * 6)];
+    birthday.year = randomLeapYear
+  }
+}
+
+/**
+ * Validate String from birthday field and determine it follows a valid "yyyy-mm-dd" structure needed for nasa api call.
+ * Additionally validate that the date generated by the string is a real date.
+ */
+ // TODO: Validate inputs from a date that has not yet occured. 
+function isValidBirthday(birthday) {
+  let pattern = /([12]\d{3}-([1-9]|0[1-9]|1[0-2])-([1-9]|0[1-9]|[12]\d|3[01]))/;
+  if (pattern.test(birthday.birthdayString()) && birthday.birthdayString().length <= 10) {
+    // verify 30-day cap for 30 day months, no leap adjustment.
+    if (birthday.month === 2 && birthday.day > 29) {
+      return false;
+    } else if (birthday.month === 4 && birthday.day > 30) {
+      return false;
+    } else if (birthday.month === 6 && birthday.day > 30) {
+      return false;
+    } else if (birthday.month === 9 && birthday.day > 30) {
+      return false;
+    } else if (birthday.month === 11 && birthday.day > 30) {
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
+
 function createMap() {
   const centerBayArea = {lat: 37.7857, lng: -122.4011};
   const bayMap = new google.maps.Map(
-    document.getElementById('map-google-headquarters'),
-    {center: centerBayArea, zoom: 9, mapTypeId: 'satellite'});
+    document.getElementById("map-google-headquarters"),
+    {center: centerBayArea, zoom: 9, mapTypeId: "satellite"});
   bayMap.setTilt(45);
   const centerBayMarker = new google.maps.Marker({position: centerBayArea, map: bayMap, title: "Bay Area"});
   const infowindow = new google.maps.InfoWindow({content: "This is the bay!"});
-  marker.addListener('click', function() {
+  centerBayMarker.addListener("click", function() {
     infowindow.open(bayMap, centerBayMarker);
   });  
 }
 
 function createLoginLogoutElement(loggedIn, targetURL, userAddress="") {
-  const body = document.createElement('div');
-  const message = document.createElement('p');
-  const link = document.createElement('a');
-  link.setAttribute('href', targetURL);
+  const body = document.createElement("div");
+  const message = document.createElement("p");
+  const link = document.createElement("a");
+  link.setAttribute("href", targetURL);
   if (loggedIn) {
     message.innerText = "Welcome, " + userAddress;
     link.innerText = "Click here to log out";
