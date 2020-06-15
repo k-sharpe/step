@@ -15,9 +15,55 @@
 package com.google.sps;
 
 import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    Collection<TimeRange> notAvailable = new HashSet<>();
+    Collection<TimeRange> available = new HashSet<>();
+    Collection<String> attendees = request.getAttendees();
+    for (Event event : events) {
+      Collection<String> eventAtteendees = event.getAttendees();
+      boolean eventContainsRequestedAttendee = false;
+      for (String eventAttendee : eventAtteendees) {
+        if (attendees.contains(eventAttendee)) {
+          eventContainsRequestedAttendee = true;
+          break;
+        }
+      }
+      if (eventContainsRequestedAttendee) {
+        notAvalable.add(event.getWhen());
+      }
+   }
+    notAvailable = Collections.sort(notAvailable, TimeRange.ORDER_BY_START);
+    available = invert(notAvailable);
+    return available;
+  }
+
+  private Collection<TimeRange> invert(Collection<TimeRange> original) {
+    Collection<TimeRange> available = new HashSet<>();
+    int start = 0;
+    int end = 0;
+    while (end < 2401) {
+      boolean contained = false;
+      for (TimeRange range : original) {
+        if (range.contains(start)) {
+          contained = true;
+          break;
+        }
+      }
+      if (contained) {
+        if (start != end) {
+          available.add()
+        }
+      } else {
+      
+      }
+    }
+    return available;
   }
 }
