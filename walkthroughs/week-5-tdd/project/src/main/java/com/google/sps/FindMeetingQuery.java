@@ -39,8 +39,8 @@ public final class FindMeetingQuery {
         findNonAvailable(events, request, notAvailable, attendees);
         findNonAvailable(events, request, notAvailableOptionalIncluded, allAttendees);
         available = invert(notAvailable);
-        removeDurationTooSmall(request, available);
         availableOptionalIncluded = invert(notAvailableOptionalIncluded);
+        removeDurationTooSmall(request, available);
         removeDurationTooSmall(request, availableOptionalIncluded);
         if (availableOptionalIncluded.isEmpty()) {
           return available;
@@ -56,6 +56,9 @@ public final class FindMeetingQuery {
     return available;
   }
 
+  /**
+  * Create a copy to prevent manipulation of attendees or optionalAttendees sets.
+  */
   private Collection<String> getAllAttendees(Collection<String> attendees, Collection<String> optionalAttendees) {
     Collection<String> all = new HashSet<>(attendees);
     Collection<String> optional = new HashSet<>(optionalAttendees);
@@ -63,6 +66,9 @@ public final class FindMeetingQuery {
     return all;
   }
 
+  /**
+  * Helper function to increase readability of parent method.
+  */
   private void removeDurationTooSmall(MeetingRequest request, List<TimeRange> available) {
     List<TimeRange> tooShort = new ArrayList<>();
     for (TimeRange open : available) {
@@ -75,6 +81,9 @@ public final class FindMeetingQuery {
     }
   }
 
+  /**
+  * Helper method to place all events that have requested attendees into a list.
+  */
   private void findNonAvailable(Collection<Event> events, MeetingRequest request, List<TimeRange> notAvailable, Collection<String> attendees) {
     for (Event event : events) {
       Collection<String> eventAtteendees = event.getAttendees();
@@ -92,6 +101,10 @@ public final class FindMeetingQuery {
    Collections.sort(notAvailable, TimeRange.ORDER_BY_START);
   }
 
+  /**
+  * Helper method to invert a List of Time Ranges for a day (Used to find availability).
+  * TODO: Support seconds, currently limited to meetings that fall on 15 minute intervals.
+  */
   private List<TimeRange> invert(List<TimeRange> original) {
     List<TimeRange> available = new ArrayList<>();
     int start = 0;
