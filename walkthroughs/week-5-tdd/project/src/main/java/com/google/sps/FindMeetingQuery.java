@@ -14,6 +14,7 @@
 
 package com.google.sps;
 
+import java.util.List;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +24,8 @@ import java.util.HashSet;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    Collection<TimeRange> notAvailable = new HashSet<>();
-    Collection<TimeRange> available = new HashSet<>();
+    List<TimeRange> notAvailable = new ArrayList<>();
+    List<TimeRange> available = new ArrayList<>();
     Collection<String> attendees = request.getAttendees();
     for (Event event : events) {
       Collection<String> eventAtteendees = event.getAttendees();
@@ -36,34 +37,55 @@ public final class FindMeetingQuery {
         }
       }
       if (eventContainsRequestedAttendee) {
-        notAvalable.add(event.getWhen());
+        notAvailable.add(event.getWhen());
       }
    }
-    notAvailable = Collections.sort(notAvailable, TimeRange.ORDER_BY_START);
+    Collections.sort(notAvailable, TimeRange.ORDER_BY_START);
     available = invert(notAvailable);
+    List<TimeRange> tooShort = new ArrayList<>();
+    for (TimeRange open : available) {
+      if (open.duration() < request.getDuration()) {
+        tooShort.add(open);
+      }
+    }
+    for (TimeRange small : tooShort) {
+      available.remove(small);
+    }
     return available;
   }
 
-  private Collection<TimeRange> invert(Collection<TimeRange> original) {
-    Collection<TimeRange> available = new HashSet<>();
+  private List<TimeRange> invert(List<TimeRange> original) {
+    List<TimeRange> available = new ArrayList<>();
     int start = 0;
     int end = 0;
-    while (end < 2401) {
+    if (original.size() == 0) {
+      available.add(TimeRange.fromStartDuration(0, 1440));
+      return available;
+    }
+    while (end < 1440) {
       boolean contained = false;
       for (TimeRange range : original) {
-        if (range.contains(start)) {
+        if (range.contains(end)) {
           contained = true;
           break;
         }
       }
       if (contained) {
-        if (start != end) {
-          available.add()
-        }
+        if (start < end) {
+          available.add(TimeRange.fromStartDuration(start, end - start));
+          }
+        end += 15;
+        start = end;
       } else {
-      
+        end += 15;
       }
     }
+    for (TimeRange range : original) {
+        if (!range.contains(end) && start != end) {
+          available.add(TimeRange.fromStartDuration(start, end - start));
+          break;
+        }
+      }
     return available;
   }
 }
