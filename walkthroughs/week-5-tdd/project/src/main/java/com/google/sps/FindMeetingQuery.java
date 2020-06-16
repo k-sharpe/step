@@ -26,7 +26,56 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> notAvailable = new ArrayList<>();
     List<TimeRange> available = new ArrayList<>();
+    List<TimeRange> notAvailableOptionalIncluded = new ArrayList<>();
+    List<TimeRange> availableOptionalIncluded = new ArrayList<>();
     Collection<String> attendees = request.getAttendees();
+    Collection<String> optionalAttendees = request.getOptionalAttendees();
+    Collection<String> allAttendees = getAllAttendees(attendees, optionalAttendees);
+
+    if (!attendees.isEmpty()) {
+      if (optionalAttendees.isEmpty()) {
+        findNonAvailable(events, request, notAvailable, attendees);
+      } else {
+        findNonAvailable(events, request, notAvailable, attendees);
+        findNonAvailable(events, request, notAvailableOptionalIncluded, allAttendees);
+        available = invert(notAvailable);
+        removeDurationTooSmall(request, available);
+        availableOptionalIncluded = invert(notAvailableOptionalIncluded);
+        removeDurationTooSmall(request, availableOptionalIncluded);
+        if (availableOptionalIncluded.isEmpty()) {
+          return available;
+        }
+        return availableOptionalIncluded;
+      }
+    } else if (!optionalAttendees.isEmpty()) {
+      attendees = optionalAttendees;
+      findNonAvailable(events, request, notAvailable, attendees);
+    }
+    available = invert(notAvailable);
+    removeDurationTooSmall(request, available);
+    return available;
+  }
+
+  private Collection<String> getAllAttendees(Collection<String> attendees, Collection<String> optionalAttendees) {
+    Collection<String> all = new HashSet<>(attendees);
+    Collection<String> optional = new HashSet<>(optionalAttendees);
+    all.addAll(optional);
+    return all;
+  }
+
+  private void removeDurationTooSmall(MeetingRequest request, List<TimeRange> available) {
+    List<TimeRange> tooShort = new ArrayList<>();
+    for (TimeRange open : available) {
+      if (open.duration() < request.getDuration()) {
+        tooShort.add(open);
+      }
+    }
+    for (TimeRange small : tooShort) {
+      available.remove(small);
+    }
+  }
+
+  private void findNonAvailable(Collection<Event> events, MeetingRequest request, List<TimeRange> notAvailable, Collection<String> attendees) {
     for (Event event : events) {
       Collection<String> eventAtteendees = event.getAttendees();
       boolean eventContainsRequestedAttendee = false;
@@ -40,18 +89,7 @@ public final class FindMeetingQuery {
         notAvailable.add(event.getWhen());
       }
    }
-    Collections.sort(notAvailable, TimeRange.ORDER_BY_START);
-    available = invert(notAvailable);
-    List<TimeRange> tooShort = new ArrayList<>();
-    for (TimeRange open : available) {
-      if (open.duration() < request.getDuration()) {
-        tooShort.add(open);
-      }
-    }
-    for (TimeRange small : tooShort) {
-      available.remove(small);
-    }
-    return available;
+   Collections.sort(notAvailable, TimeRange.ORDER_BY_START);
   }
 
   private List<TimeRange> invert(List<TimeRange> original) {
