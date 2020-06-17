@@ -40,8 +40,8 @@ public final class FindMeetingQuery {
         findNonAvailable(events, request, notAvailableOptionalIncluded, allAttendees);
         available = invert(notAvailable);
         availableOptionalIncluded = invert(notAvailableOptionalIncluded);
-        removeDurationTooSmall(request, available);
-        removeDurationTooSmall(request, availableOptionalIncluded);
+        available =removeDurationTooSmall(request, available);
+        availableOptionalIncluded = removeDurationTooSmall(request, availableOptionalIncluded);
         if (availableOptionalIncluded.isEmpty()) {
           return available;
         }
@@ -52,7 +52,7 @@ public final class FindMeetingQuery {
       findNonAvailable(events, request, notAvailable, attendees);
     }
     available = invert(notAvailable);
-    removeDurationTooSmall(request, available);
+    available = removeDurationTooSmall(request, available);
     return available;
   }
 
@@ -69,22 +69,21 @@ public final class FindMeetingQuery {
   /**
   * Helper function to increase readability of parent method.
   */
-  private void removeDurationTooSmall(MeetingRequest request, List<TimeRange> available) {
-    List<TimeRange> tooShort = new ArrayList<>();
+  private List<TimeRange> removeDurationTooSmall(MeetingRequest request, List<TimeRange> available) {
+    List<TimeRange> goodDuration = new ArrayList<>();
     for (TimeRange open : available) {
-      if (open.duration() < request.getDuration()) {
-        tooShort.add(open);
+      if (open.duration() >= request.getDuration()) {
+        goodDuration.add(open);
       }
     }
-    for (TimeRange small : tooShort) {
-      available.remove(small);
-    }
+    return goodDuration;
   }
 
   /**
   * Helper method to place all events that have requested attendees into a list.
   */
-  private void findNonAvailable(Collection<Event> events, MeetingRequest request, List<TimeRange> notAvailable, Collection<String> attendees) {
+  private void findNonAvailable(Collection<Event> events, MeetingRequest request,
+                     List<TimeRange> notAvailable, Collection<String> attendees) {
     for (Event event : events) {
       Collection<String> eventAtteendees = event.getAttendees();
       boolean eventContainsRequestedAttendee = false;
@@ -109,11 +108,13 @@ public final class FindMeetingQuery {
     List<TimeRange> available = new ArrayList<>();
     int start = 0;
     int end = 0;
-    if (original.size() == 0) {
-      available.add(TimeRange.fromStartDuration(0, 1440));
+    final int END_OF_DAY = 1440;
+    final int FIFTEEN = 15;
+    if (original.isEmpty()) {
+      available.add(TimeRange.fromStartDuration(0, END_OF_DAY));
       return available;
     }
-    while (end < 1440) {
+    while (end < END_OF_DAY) {
       boolean contained = false;
       for (TimeRange range : original) {
         if (range.contains(end)) {
@@ -125,16 +126,16 @@ public final class FindMeetingQuery {
         if (start < end) {
           available.add(TimeRange.fromStartDuration(start, end - start));
           }
-        end += 15;
+        end += FIFTEEN;
         start = end;
       } else {
-        end += 15;
+        end += FIFTEEN;
       }
     }
     for (TimeRange range : original) {
-        if (!range.contains(end) && start != end) {
-          available.add(TimeRange.fromStartDuration(start, end - start));
-          break;
+      if (!range.contains(end) && start != end) {
+        available.add(TimeRange.fromStartDuration(start, end - start));
+        break;
         }
       }
     return available;
