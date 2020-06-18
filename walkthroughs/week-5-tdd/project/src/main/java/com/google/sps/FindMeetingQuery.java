@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 
 public final class FindMeetingQuery {
+  private static final int SPACE_INCREMENT = 15;
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> notAvailable = new ArrayList<>();
     List<TimeRange> available = new ArrayList<>();
@@ -40,7 +41,7 @@ public final class FindMeetingQuery {
         findNonAvailable(events, request, notAvailableOptionalIncluded, allAttendees);
         available = invert(notAvailable);
         availableOptionalIncluded = invert(notAvailableOptionalIncluded);
-        available =removeDurationTooSmall(request, available);
+        available = removeDurationTooSmall(request, available);
         availableOptionalIncluded = removeDurationTooSmall(request, availableOptionalIncluded);
         if (availableOptionalIncluded.isEmpty()) {
           return available;
@@ -108,13 +109,12 @@ public final class FindMeetingQuery {
     List<TimeRange> available = new ArrayList<>();
     int start = 0;
     int end = 0;
-    final int END_OF_DAY = 1440;
-    final int FIFTEEN = 15;
+    
     if (original.isEmpty()) {
-      available.add(TimeRange.fromStartDuration(0, END_OF_DAY));
+      available.add(TimeRange.fromStartDuration(0, TimeRange.END_OF_DAY + 1));
       return available;
     }
-    while (end < END_OF_DAY) {
+    while (end <= TimeRange.END_OF_DAY) {
       boolean contained = false;
       for (TimeRange range : original) {
         if (range.contains(end)) {
@@ -126,10 +126,10 @@ public final class FindMeetingQuery {
         if (start < end) {
           available.add(TimeRange.fromStartDuration(start, end - start));
           }
-        end += FIFTEEN;
+        end += SPACE_INCREMENT;
         start = end;
       } else {
-        end += FIFTEEN;
+        end += SPACE_INCREMENT;
       }
     }
     for (TimeRange range : original) {

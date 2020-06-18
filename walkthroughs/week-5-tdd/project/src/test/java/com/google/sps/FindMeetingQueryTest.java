@@ -274,7 +274,7 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-@Test
+  @Test
   public void everyAttendeeIsConsideredAddition() {
     // Have each person have different events. We should see two options because each person has
     // split the restricted times.
@@ -304,7 +304,7 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-@Test
+  @Test
   public void threeAttendees() {
     // Have each person have different events. We should see two options because each person has
     // split the restricted times.
